@@ -10,11 +10,12 @@
     <packaging>pom</packaging>
     <modules>
         <module>small-JVM-01</module>
+        <module>small-JVM-02</module>
     </modules>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!--        父MAVEN中可以在此处对版本号进行限定-->

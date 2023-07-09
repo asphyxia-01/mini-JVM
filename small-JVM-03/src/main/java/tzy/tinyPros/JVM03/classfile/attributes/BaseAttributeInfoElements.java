@@ -18,7 +18,8 @@ public abstract class BaseAttributeInfoElements {
     protected int attrLen;
 
     public BaseAttributeInfoElements(String attrName, int attrLen) {
-
+        this.attrName = attrName;
+        this.attrLen = attrLen;
     }
 
     public String getAttrName() {

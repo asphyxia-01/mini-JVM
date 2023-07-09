@@ -20,7 +20,7 @@ public class UnparsedAttribute extends BaseAttributeInfoElements implements Attr
 
     @Override
     public void readInfo(ClassReader cr) {
-        this.data = cr.readBytes(this.attrLen);
+        this.data = cr.readBytes(super.attrLen);
     }
 
     public byte[] getData() {

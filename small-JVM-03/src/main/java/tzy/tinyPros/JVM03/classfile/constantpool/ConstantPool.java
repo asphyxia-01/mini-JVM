@@ -59,7 +59,8 @@ public class ConstantPool {
      * @return 对应的类名
      */
     public String getClassName(int idx) {
-        return ((ConstantClassInfo) this.infos[idx]).getName();
+        ConstantClassInfo info = (ConstantClassInfo) this.infos[idx];
+        return info == null?"":info.getName();
     }
 
     public ConstantInfo[] getInfos() {

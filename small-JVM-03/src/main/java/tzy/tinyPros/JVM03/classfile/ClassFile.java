@@ -62,7 +62,7 @@ public class ClassFile {
         this.superClassIdx = cr.readU2();
         this.interfaceIdxs = cr.readU2sByHeadLen();
         this.fields = MemberInfo.readFieldsOrMethods(cr, this.constantPool);
-        this.fields = MemberInfo.readFieldsOrMethods(cr, this.constantPool);
+        this.methods = MemberInfo.readFieldsOrMethods(cr, this.constantPool);
         this.attributes = AttributeInfo.readAttributes(cr, this.constantPool);
     }
 

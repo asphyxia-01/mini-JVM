@@ -48,7 +48,6 @@ public class CodeAttribute extends BaseAttributeInfoElements implements Attribut
         this.maxStack = cr.readU2();
         this.maxLocals = cr.readU2();
         int codeLength = cr.readUInt32ToInt();
-        System.out.printf("code_length: %d\n",codeLength);
         this.code = cr.readBytes(codeLength);
         this.exceptionTable = ExceptionEntry.readExceptionEntries(cr);
         this.attributeInfos = AttributeInfo.readAttributes(cr,this.cp);

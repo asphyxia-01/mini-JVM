@@ -5,6 +5,8 @@ package tzy.tinyPros.JVM05.rtda.thread;
  * @since 2023/7/11 16:22
  * <p>
  * 操作数栈，不同于局部变量表，这个是栈需要显式维护栈顶指针，此处不考虑任何异常
+ *
+ * 注意：byte、char、short、int都是占用一个slot；但是long、double占用两个slot
  **/
 public class OperandStack {
 
@@ -71,4 +73,16 @@ public class OperandStack {
     public Object popRef() {
         return this.slots[this.top--].getRef(true);
     }
+
+    public Slot popSlot(){
+        return this.slots[this.top--];
+    }
+    public void pushSlot(Slot slot){
+        this.slots[++this.top] = slot;
+    }
+
+    public Slot[] getSlots(){
+        return this.slots;
+    }
+
 }

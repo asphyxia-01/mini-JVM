@@ -21,4 +21,8 @@ public class Index16Instruction implements Instruction {
     public void execute(Frame frame) {
 
     }
+
+    public int getIdx() {
+        return idx;
+    }
 }

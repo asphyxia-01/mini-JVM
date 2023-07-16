@@ -48,4 +48,7 @@ public class Index8Instruction implements Instruction {
         frame.getLocalVarsTable().setLong(idx, l);
     }
 
+    public int getIdx() {
+        return idx;
+    }
 }

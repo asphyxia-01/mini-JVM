@@ -24,8 +24,8 @@ public class NoOperandsInstruction implements Instruction {
      * dcmp || dcmpg || dcmpl
      */
     protected void _dcmp(Frame frame, boolean gflag) {
-        double var0 = frame.getOperandStack().popDouble();
         double var1 = frame.getOperandStack().popDouble();
+        double var0 = frame.getOperandStack().popDouble();
         if (var0 > var1) {
             frame.getOperandStack().pushInt(1);
             return;
@@ -50,8 +50,8 @@ public class NoOperandsInstruction implements Instruction {
 
     protected void _fcmp(Frame frame, boolean gflag) {
         OperandStack stack = frame.getOperandStack();
-        float var2 = stack.popFloat();
         float var3 = stack.popFloat();
+        float var2 = stack.popFloat();
         if (var2 > var3) {
             frame.getOperandStack().pushInt(1);
             return;

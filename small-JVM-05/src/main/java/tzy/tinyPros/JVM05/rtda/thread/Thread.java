@@ -47,6 +47,10 @@ public class Thread {
         this.stack = new JVMStack(maxStackDepth);
     }
 
+    public Thread(){
+        this(1024);
+    }
+
     public void setPc(int pc) {
         this.pc = pc;
     }

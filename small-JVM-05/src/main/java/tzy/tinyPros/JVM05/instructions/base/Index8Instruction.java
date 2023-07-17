@@ -51,4 +51,8 @@ public class Index8Instruction implements Instruction {
     public int getIdx() {
         return idx;
     }
+
+    public void setIdx(int idx){
+        this.idx = idx;
+    }
 }

@@ -30,7 +30,9 @@ public class Main {
         String className = cmd.getMainClass().get().replace(".", "/");
         ClassFile cf = loadClass(className, cp);
         assert cf != null;
-        printClassStructure(cf);
+        MemberInfo mainMethod = getMainMethod(cf.getMethods());
+        new Interpreter(mainMethod);
+//        printClassStructure(cf);
     }
 
     public static ClassFile loadClass(String className, Classpath cp) {
@@ -73,5 +75,15 @@ public class Main {
 
     public static void printUserArgs(Cmd cmd){
         System.out.printf("classpath:%s class:%s args:%s\n", cmd.getClasspath().orElse(null), cmd.getMainClass().orElse(null), cmd.getAppArgs().orElse(null));
+    }
+
+    public static MemberInfo getMainMethod(MemberInfo[] infos){
+        for (MemberInfo info : infos) {
+            // 寻找main方法
+            if("main".equals(info.getName())&&"([Ljava/lang/String;)V".equals(info.getDescriptor())){
+                return info;
+            }
+        }
+        return null;
     }
 }

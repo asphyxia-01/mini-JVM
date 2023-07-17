@@ -23,6 +23,7 @@
 
         <!--        父MAVEN中可以在此处对版本号进行限定-->
         <jcommander.version>1.82</jcommander.version>
+        <fastjson.version>1.2.78</fastjson.version>
     </properties>
 
     <dependencyManagement>
@@ -31,6 +32,11 @@
                 <groupId>com.beust</groupId>
                 <artifactId>jcommander</artifactId>
                 <version>${jcommander.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -36,4 +36,12 @@ public class IINC implements Instruction {
         LocalVarsTable table = frame.getLocalVarsTable();
         table.setInt(this.index, table.getInt(this.index) + this.constVal);
     }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 }

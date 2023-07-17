@@ -7,34 +7,34 @@ package tzy.tinyPros.JVM05.instructions.base;
 public class ByteReader {
     private byte[] code;
     /**
-     * 记录当前所在的字节下标
+     * 程序计数器：其实就是指令所在的地址（单位：byte），这里表现为索引（或第几个字节）
      */
-    private int index;
+    private int pc;
 
-    public void reset(byte[] code, int index) {
+    public void reset(byte[] code, int pc) {
         this.code = code;
-        this.index = index;
+        this.pc = pc;
     }
 
-    public int getIndex() {
-        return this.index;
+    public int getPC() {
+        return this.pc;
     }
 
     public byte readByte() {
-        return this.code[index++];
+        return this.code[pc++];
     }
 
     public short readShort() {
-        short var0 = this.code[this.index++];
-        short var1 = this.code[this.index++];
+        short var0 = this.code[this.pc++];
+        short var1 = this.code[this.pc++];
         return (short) ((var0 << 8) | var1);
     }
 
     public int readInt() {
-        int var0 = this.code[this.index++];
-        int var1 = this.code[this.index++];
-        int var2 = this.code[this.index++];
-        int var3 = this.code[this.index++];
+        int var0 = this.code[this.pc++];
+        int var1 = this.code[this.pc++];
+        int var2 = this.code[this.pc++];
+        int var3 = this.code[this.pc++];
         return (var0 << 24) | (var1 << 16) | (var2 << 8) | var3;
     }
 
@@ -56,8 +56,8 @@ public class ByteReader {
      */
     public void skipPadding() {
         // index 必须是4的倍数
-        while (this.index % 4 != 0) {
-            this.index++;
+        while (this.pc % 4 != 0) {
+            this.pc++;
         }
     }
 

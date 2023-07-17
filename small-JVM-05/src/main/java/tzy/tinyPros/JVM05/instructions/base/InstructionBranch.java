@@ -28,4 +28,8 @@ public class InstructionBranch implements Instruction {
         Object ref1 = frame.getOperandStack().popRef();
         return ref0.equals(ref1);
     }
+
+    public int getOffset() {
+        return offset;
+    }
 }

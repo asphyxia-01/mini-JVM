@@ -1,4 +1,4 @@
-package tzy.tinyPros.JVM05.instructions.math.and;
+package tzy.tinyPros.JVM05.instructions.conversions.i2x;
 
 import tzy.tinyPros.JVM05.instructions.base.NoOperandsInstruction;
 import tzy.tinyPros.JVM05.rtda.thread.Frame;
@@ -6,14 +6,13 @@ import tzy.tinyPros.JVM05.rtda.thread.OperandStack;
 
 /**
  * @author TPureZY
- * @since 2023/7/16 20:40
+ * @since 2023/7/17 14:18
  **/
-public class LADD extends NoOperandsInstruction {
+public class I2S extends NoOperandsInstruction {
     @Override
     public void execute(Frame frame) {
         OperandStack stack = frame.getOperandStack();
-        long v0 = stack.popLong();
-        long v1 = stack.popLong();
-        stack.pushLong(v0 & v1);
+        int i = stack.popInt();
+        stack.pushInt((short)i);
     }
 }

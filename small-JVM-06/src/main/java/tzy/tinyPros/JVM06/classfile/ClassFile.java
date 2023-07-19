@@ -8,6 +8,8 @@ import tzy.tinyPros.JVM06.classfile.constantpool.ConstantPool;
  * @since 2023/7/6 17:05
  * <p>
  * 将class字节流分解成具体的结构
+ * <p>
+ * 这一步结束后得到的其实相当于生（就是还不能直接投入使用，需要转为heap包下的Class）的 Class 结构体，使用 new Class(ClassFile) 转换
  * <blockquote><pre>
  * ClassFile {
  *     u4             magic;
@@ -130,7 +132,7 @@ public class ClassFile {
         return names;
     }
 
-    public ConstantPool getConstantPool(){
+    public ConstantPool getConstantPool() {
         return this.constantPool;
     }
 

@@ -60,7 +60,7 @@ public class ConstantPool {
      */
     public String getClassName(int idx) {
         ConstantClassInfo info = (ConstantClassInfo) this.infos[idx];
-        return info == null?"":info.getName();
+        return info == null ? "" : info.getName();
     }
 
     public ConstantInfo[] getInfos() {

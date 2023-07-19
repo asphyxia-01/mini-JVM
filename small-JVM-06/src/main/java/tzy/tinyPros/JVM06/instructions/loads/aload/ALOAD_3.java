@@ -2,6 +2,8 @@ package tzy.tinyPros.JVM06.instructions.loads.aload;
 
 import tzy.tinyPros.JVM06.instructions.base.NoOperandsInstruction;
 import tzy.tinyPros.JVM06.rtda.thread.Frame;
+import tzy.tinyPros.JVM06.rtda.heap.methodarea.Object;
+
 
 /**
  * @author TPureZY

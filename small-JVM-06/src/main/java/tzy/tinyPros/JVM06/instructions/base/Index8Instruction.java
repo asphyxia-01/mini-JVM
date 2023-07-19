@@ -1,6 +1,7 @@
 package tzy.tinyPros.JVM06.instructions.base;
 
 import tzy.tinyPros.JVM06.rtda.thread.Frame;
+import tzy.tinyPros.JVM06.rtda.heap.methodarea.Object;
 
 /**
  * @author TPureZY

@@ -32,6 +32,9 @@ public class Class {
      * 类变量占用的空间大小
      */
     public int staticSlotCount;
+    /**
+     * 类变量会在类加载时候进行初始化，和类是直接绑定关系，不需要 new 实例化
+     */
     public Slots staticVars;
 
     public Class(ClassFile file) {

@@ -1,6 +1,5 @@
 package tzy.tinyPros.JVM06.rtda.heap.constantpool;
 
-import com.sun.org.apache.bcel.internal.classfile.ConstantDouble;
 import tzy.tinyPros.JVM06.classfile.constantpool.ConstantInfo;
 import tzy.tinyPros.JVM06.classfile.constantpool.ConstantPool;
 import tzy.tinyPros.JVM06.classfile.constantpool.impl.*;
@@ -40,11 +39,11 @@ public class RunTimeConstantPool {
                     break;
                 case ConstantInfo.CONSTANT_TAG_LONG:
                     ConstantLongInfo var2 = (ConstantLongInfo) info;
-                    this.constants[i] = var2.getVal();
+                    this.constants[i++] = var2.getVal();
                     break;
                 case ConstantInfo.CONSTANT_TAG_DOUBLE:
                     ConstantDoubleInfo var3 = (ConstantDoubleInfo) info;
-                    this.constants[i] = var3.getVal();
+                    this.constants[i++] = var3.getVal();
                     break;
                 case ConstantInfo.CONSTANT_TAG_STRING:
                     ConstantStringInfo var4 = (ConstantStringInfo) info;

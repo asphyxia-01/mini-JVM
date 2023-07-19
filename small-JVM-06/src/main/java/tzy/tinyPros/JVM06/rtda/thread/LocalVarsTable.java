@@ -1,5 +1,8 @@
 package tzy.tinyPros.JVM06.rtda.thread;
 
+import tzy.tinyPros.JVM06.rtda.heap.methodarea.Object;
+
+
 /**
  * @author TPureZY
  * @since 2023/7/11 15:20

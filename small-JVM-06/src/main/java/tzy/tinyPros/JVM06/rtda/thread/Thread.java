@@ -1,5 +1,7 @@
 package tzy.tinyPros.JVM06.rtda.thread;
 
+import tzy.tinyPros.JVM06.rtda.heap.methodarea.Method;
+
 /**
  * @author TPureZY
  * @since 2023/7/11 14:37
@@ -47,7 +49,7 @@ public class Thread {
         this.stack = new JVMStack(maxStackDepth);
     }
 
-    public Thread(){
+    public Thread() {
         this(1024);
     }
 
@@ -69,6 +71,10 @@ public class Thread {
 
     public Frame topFrame() {
         return this.stack.top();
+    }
+
+    public Frame newFrame(Method method) {
+        return new Frame(this, method);
     }
 
 }

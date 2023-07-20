@@ -95,7 +95,7 @@ public class Class {
     public String getPackageName() {
         int i = this.name.lastIndexOf("/");
         if (i >= 0) {
-            this.name.substring(0, i);
+            return this.name.substring(0, i);
         }
         // 说明是默认包
         return "";

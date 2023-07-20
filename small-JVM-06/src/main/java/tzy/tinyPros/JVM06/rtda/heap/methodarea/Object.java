@@ -8,20 +8,12 @@ package tzy.tinyPros.JVM06.rtda.heap.methodarea;
  **/
 public class Object {
 
-    Class clazz;
-    Slots fields;
+    public final Class clazz;
+    public final Slots fields;
 
     public Object(Class clazz) {
         this.clazz = clazz;
         this.fields = new Slots(clazz.instanceSlotCount);
-    }
-
-    public Class getClazz() {
-        return clazz;
-    }
-
-    public Slots getFields() {
-        return fields;
     }
 
     /**

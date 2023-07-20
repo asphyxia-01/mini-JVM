@@ -38,7 +38,7 @@ public abstract class ConstantMemberRefInfo implements ConstantInfo {
     }
 
     public String getClassName(){
-        return cp.getUtf8(this.classIdx);
+        return cp.getClassName(this.classIdx);
     }
 
     public NameAndTypeInstance getNameAndDescriptor(){

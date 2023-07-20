@@ -1,5 +1,7 @@
 package tzy.tinyPros.JVM06.rtda.thread;
 
+import tzy.tinyPros.JVM06.rtda.heap.methodarea.Method;
+
 /**
  * @author TPureZY
  * @since 2023/7/11 15:01
@@ -16,16 +18,25 @@ public class Frame {
      */
     private OperandStack operandStack;
 
+    /**
+     * 标识哪个线程再运行此方法
+     */
     private Thread thread;
+
+    /**
+     * 该栈帧对应的方法
+     */
+    private Method method;
 
     private int nextPC;
 
     Frame next;
 
-    public Frame(Thread thread, int maxVarsLength, int maxStackDepth) {
+    public Frame(Thread thread, Method method) {
         this.thread = thread;
-        this.localVarsTable = new LocalVarsTable(maxVarsLength);
-        this.operandStack = new OperandStack(maxStackDepth);
+        this.method = method;
+        this.localVarsTable = new LocalVarsTable(this.method.maxLocalVarsLength);
+        this.operandStack = new OperandStack(this.method.maxStackDepth);
     }
 
     public LocalVarsTable getLocalVarsTable() {
@@ -42,6 +53,10 @@ public class Frame {
 
     public int getNextPC() {
         return this.nextPC;
+    }
+
+    public Method getMethod() {
+        return method;
     }
 
     public void setNextPC(int var0) {

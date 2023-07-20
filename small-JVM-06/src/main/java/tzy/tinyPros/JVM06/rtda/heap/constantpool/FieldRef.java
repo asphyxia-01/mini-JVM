@@ -30,12 +30,12 @@ public class FieldRef extends MemberRef {
         } else if (this.field.isAccessibleTo(this.runTimeConstantPool.clazz)) {
             return this.field;
         }
-        return null;
+        return this.field;
     }
 
-    public void resolveFieldRef() throws NoSuchFieldException, IllegalAccessException {
+    private void resolveFieldRef() throws NoSuchFieldException, IllegalAccessException {
         // 持有这个字段的类
-        Class holder = this.clazz;
+        Class holder = this.getClazz();
         // 访问这个字段的类
         Class visitor = this.runTimeConstantPool.clazz;
 
@@ -55,7 +55,7 @@ public class FieldRef extends MemberRef {
      * @param name       字段名称
      * @param descriptor 字段描述符
      */
-    public Field lookupField(Class holder, String name, String descriptor) {
+    private Field lookupField(Class holder, String name, String descriptor) {
         // 终止条件
         if (holder == null) {
             return null;

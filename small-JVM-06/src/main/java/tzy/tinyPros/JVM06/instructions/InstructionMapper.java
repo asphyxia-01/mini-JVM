@@ -68,6 +68,7 @@ import tzy.tinyPros.JVM06.instructions.math.sub.ISUB;
 import tzy.tinyPros.JVM06.instructions.math.sub.LSUB;
 import tzy.tinyPros.JVM06.instructions.math.xor.IXOR;
 import tzy.tinyPros.JVM06.instructions.math.xor.LXOR;
+import tzy.tinyPros.JVM06.instructions.reference.*;
 import tzy.tinyPros.JVM06.instructions.stack.dup.*;
 import tzy.tinyPros.JVM06.instructions.stack.pop.POP;
 import tzy.tinyPros.JVM06.instructions.stack.pop.POP2;
@@ -443,14 +444,14 @@ public class InstructionMapper {
             // 	return areturn
             // case 0xb1:
             // 	return _return
-            //	case 0xb2:
-            //		return &GET_STATIC{}
-            // case 0xb3:
-            // 	return &PUT_STATIC{}
-            // case 0xb4:
-            // 	return &GET_FIELD{}
-            // case 0xb5:
-            // 	return &PUT_FIELD{}
+            case (byte) 0xb2:
+                return new GET_STATIC();
+             case (byte) 0xb3:
+             	return new PUT_STATIC();
+             case (byte) 0xb4:
+             	return new GET_FIELD();
+             case (byte) 0xb5:
+             	return new PUT_FIELD();
             //	case 0xb6:
             //		return &INVOKE_VIRTUAL{}
             // case 0xb7:
@@ -461,8 +462,8 @@ public class InstructionMapper {
             // 	return &INVOKE_INTERFACE{}
             // case 0xba:
             // 	return &INVOKE_DYNAMIC{}
-            // case 0xbb:
-            // 	return &NEW{}
+             case (byte) 0xbb:
+             	return new NEW();
             // case 0xbc:
             // 	return &NEW_ARRAY{}
             // case 0xbd:
@@ -471,10 +472,10 @@ public class InstructionMapper {
             // 	return arraylength
             // case 0xbf:
             // 	return athrow
-            // case 0xc0:
-            // 	return &CHECK_CAST{}
-            // case 0xc1:
-            // 	return &INSTANCE_OF{}
+             case (byte) 0xc0:
+             	return new CHECK_CAST();
+             case (byte) 0xc1:
+             	return new INSTANCE_OF();
             // case 0xc2:
             // 	return monitorenter
             // case 0xc3:

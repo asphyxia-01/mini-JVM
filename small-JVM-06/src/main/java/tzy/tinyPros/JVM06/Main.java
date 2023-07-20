@@ -3,6 +3,9 @@ package tzy.tinyPros.JVM06;
 import tzy.tinyPros.JVM06.classfile.ClassFile;
 import tzy.tinyPros.JVM06.classfile.MemberInfo;
 import tzy.tinyPros.JVM06.classpath.Classpath;
+import tzy.tinyPros.JVM06.rtda.heap.ClassLoader;
+import tzy.tinyPros.JVM06.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM06.rtda.heap.methodarea.Method;
 
 import java.util.Arrays;
 
@@ -28,11 +31,11 @@ public class Main {
         Classpath cp = new Classpath(cmd.getJre().orElse(null), cmd.getClasspath().orElse(null));
         // Java中命名空间中类的全类名和classpath组合就是目标文件的路径，组合时候将全类名的'.'全部更改为'/'
         String className = cmd.getMainClass().get().replace(".", "/");
-        ClassFile cf = loadClass(className, cp);
-        assert cf != null;
-        MemberInfo mainMethod = getMainMethod(cf.getMethods());
+        ClassLoader classLoader = new ClassLoader(cp);
+        Class mainClass = classLoader.loadClass(className);
+        Method mainMethod = mainClass.getMainMethod();
+        assert mainMethod != null : "Main method not found in class " + cmd.getMainClass();
         new Interpreter(mainMethod);
-//        printClassStructure(cf);
     }
 
     public static ClassFile loadClass(String className, Classpath cp) {
@@ -73,14 +76,14 @@ public class Main {
         }
     }
 
-    public static void printUserArgs(Cmd cmd){
+    public static void printUserArgs(Cmd cmd) {
         System.out.printf("classpath:%s class:%s args:%s\n", cmd.getClasspath().orElse(null), cmd.getMainClass().orElse(null), cmd.getAppArgs().orElse(null));
     }
 
-    public static MemberInfo getMainMethod(MemberInfo[] infos){
+    public static MemberInfo getMainMethod(MemberInfo[] infos) {
         for (MemberInfo info : infos) {
             // 寻找main方法
-            if("main".equals(info.getName())&&"([Ljava/lang/String;)V".equals(info.getDescriptor())){
+            if ("main".equals(info.getName()) && "([Ljava/lang/String;)V".equals(info.getDescriptor())) {
                 return info;
             }
         }

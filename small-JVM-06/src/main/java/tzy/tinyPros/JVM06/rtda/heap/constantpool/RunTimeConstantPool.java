@@ -26,7 +26,7 @@ public class RunTimeConstantPool {
         this.clazz = clazz;
         this.constants = new Object[cnt];
         ConstantInfo[] infos = cp.getInfos();
-        for (int i = 0; i < cnt; i++) {
+        for (int i = 1; i < cnt; i++) {
             ConstantInfo info = infos[i];
             switch (info.tag()) {
                 case ConstantInfo.CONSTANT_TAG_INTEGER:

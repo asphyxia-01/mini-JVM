@@ -13,6 +13,12 @@ public class Field extends ClassMember {
 
     /**
      * static final关键字定义的常量字段才有这个
+     * <p>
+     * ①.static final 修饰的常量如果是编译时常量（在编译阶段就有明确的值），通过类名点调用时不需要加载所在类的。
+     * <p>
+     * ②.static final 修饰的常量如果不是编译时常量（在编译阶段就没有明确的值），通过类名点调用时是要加载所在类的。
+     * <p>
+     * ③.只用static修饰的变量在用 类名调用时也是需要加载所在类的。
      */
     public final int constValueIndex;
     public int slotId;

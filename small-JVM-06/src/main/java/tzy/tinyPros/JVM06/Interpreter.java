@@ -6,6 +6,7 @@ import tzy.tinyPros.JVM06.classfile.attributes.impl.CodeAttribute;
 import tzy.tinyPros.JVM06.instructions.InstructionMapper;
 import tzy.tinyPros.JVM06.instructions.base.ByteReader;
 import tzy.tinyPros.JVM06.instructions.base.Instruction;
+import tzy.tinyPros.JVM06.rtda.heap.methodarea.Method;
 import tzy.tinyPros.JVM06.rtda.thread.Frame;
 import tzy.tinyPros.JVM06.rtda.thread.Thread;
 
@@ -19,16 +20,12 @@ import java.util.Objects;
  **/
 public class Interpreter {
 
-    Interpreter(MemberInfo info) {
-        CodeAttribute codeInfo = info.getCodeAttributeInfo();
-        int maxStack = codeInfo.getMaxStack();
-        int maxLocals = codeInfo.getMaxLocals();
-        byte[] code = codeInfo.getCode();
+    Interpreter(Method method) {
         // 模拟JVM创建主线程运行 main(String[] args) 方法
-        Thread thread = new Thread();
-        Frame frame = new Frame(thread, maxLocals, maxStack);
-        thread.pushFrame(frame);
-        this.loop(thread, code);
+        Thread mainThread = new Thread();
+        Frame frame = mainThread.newFrame(method);
+        mainThread.pushFrame(frame);
+        loop(mainThread, method.code);
     }
 
     private void loop(Thread thread, byte[] code) {
@@ -39,7 +36,7 @@ public class Interpreter {
             int nextPC = frame.getNextPC();
             thread.setPc(nextPC);
             // 取指
-            br.reset(code,nextPC);
+            br.reset(code, nextPC);
             byte opcode = br.readByte();
             Instruction instruction = InstructionMapper.acquireInstruction(opcode);
             if (Objects.isNull(instruction)) {

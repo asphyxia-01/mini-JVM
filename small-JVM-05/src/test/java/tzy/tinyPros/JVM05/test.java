@@ -5,11 +5,16 @@ package tzy.tinyPros.JVM05;
  * @since 2023/7/17 21:14
  **/
 public class test {
+
+    static int ans = -1;
+
     public static void main(String[] args) {
-        int ans = -1;
+        int tmp = ans;
+
         for (int i = 0; i < 10; i++) {
-            ans += i;
+            tmp += i;
         }
-        System.out.println(ans);
+        ans = tmp;
+//        System.out.println(ans);
     }
 }

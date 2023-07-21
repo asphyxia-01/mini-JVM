@@ -1,0 +1,6 @@
+保留(reserved)指令主要有三条：
+    202(0xCA) breakpoint 给调试器使用
+    254(0xFE) impdep1
+    266(0xFF) impdep2
+    impdep1和impdep2两条主要给JVM内部使用
+    上面三条指令均不允许出现在class文件中

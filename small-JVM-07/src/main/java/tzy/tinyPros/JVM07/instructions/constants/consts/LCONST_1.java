@@ -10,6 +10,6 @@ import tzy.tinyPros.JVM07.rtda.thread.Frame;
 public class LCONST_1 extends NoOperandsInstruction {
     @Override
     public void execute(Frame frame) {
-        frame.getOperandStack().pushLong(1);
+        frame.getOperandStack().pushLong(1L);
     }
 }

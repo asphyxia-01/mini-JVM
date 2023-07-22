@@ -20,6 +20,9 @@ public class Cmd {
     @Parameter(names = {"-cp", "-classpath"}, description = "import classpath", order = 1, arity = 1)
     String classpath;
 
+    @Parameter(names = "-verbose:inst", description = "enable verbose output", order = 5, arity = 1)
+    boolean verboseInstFlag = false;
+
     @Parameter(names = {"-Xjre"}, description = "jre path(now using jre1.8 which has rj.jar)", order = 4)
     String jre;
 
@@ -46,6 +49,10 @@ public class Cmd {
 
     public boolean isLegal() {
         return mainClassAndArgs != null && mainClassAndArgs.size() > 1;
+    }
+
+    public Optional<Boolean> getverboseInstFlag() {
+        return Optional.of(this.verboseInstFlag);
     }
 
     public static Cmd parse(String[] argv) {

@@ -7,7 +7,7 @@ import tzy.tinyPros.JVM07.rtda.heap.methodarea.Object;
  * @since 2023/7/11 16:22
  * <p>
  * 操作数栈，不同于局部变量表，这个是栈需要显式维护栈顶指针，此处不考虑任何异常
- *
+ * <p>
  * 注意：byte、char、short、int都是占用一个slot；但是long、double占用两个slot
  **/
 public class OperandStack {
@@ -53,7 +53,6 @@ public class OperandStack {
     public void pushLong(long val) {
         // 强转高位截断
         this.slots[++this.top].setNum((int) val);
-        // 大端存储
         this.slots[++this.top].setNum((int) (val >> 32));
     }
 
@@ -79,14 +78,19 @@ public class OperandStack {
         return this.slots[this.top--].getRef(true);
     }
 
-    public Slot popSlot(){
+    public Object getRefFromTop(int depth) {
+        return this.slots[this.top - depth].getRef(false);
+    }
+
+    public Slot popSlot() {
         return this.slots[this.top--];
     }
-    public void pushSlot(Slot slot){
+
+    public void pushSlot(Slot slot) {
         this.slots[++this.top] = slot;
     }
 
-    public Slot[] getSlots(){
+    public Slot[] getSlots() {
         return this.slots;
     }
 

@@ -41,14 +41,14 @@ public class LocalVarsTable {
     }
 
     public void setLong(int idx,long val){
-        this.slots[idx].setNum((int)(val>>32));
         // 高位截断
-        this.slots[idx+1].setNum((int)val);
+        this.slots[idx].setNum((int)val);
+        this.slots[idx+1].setNum((int)(val>>32));
     }
 
     public long getLong(int idx){
-        long high = this.slots[idx].getNum();
-        long low = this.slots[idx+1].getNum();
+        long low = this.slots[idx].getNum();
+        long high = this.slots[idx+1].getNum();
         return (high<<32)|low;
     }
 

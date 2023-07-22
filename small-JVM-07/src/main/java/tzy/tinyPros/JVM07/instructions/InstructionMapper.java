@@ -13,10 +13,14 @@ import tzy.tinyPros.JVM07.instructions.comparisons.lcmp.LCMP;
 import tzy.tinyPros.JVM07.instructions.constants.consts.*;
 import tzy.tinyPros.JVM07.instructions.constants.ipush.BIPUSH;
 import tzy.tinyPros.JVM07.instructions.constants.ipush.SIPUSH;
+import tzy.tinyPros.JVM07.instructions.constants.ldc.LDC;
+import tzy.tinyPros.JVM07.instructions.constants.ldc.LDC2_W;
+import tzy.tinyPros.JVM07.instructions.constants.ldc.LDC_W;
 import tzy.tinyPros.JVM07.instructions.constants.nop.NOP;
 import tzy.tinyPros.JVM07.instructions.control.GOTO;
 import tzy.tinyPros.JVM07.instructions.control.LOOKUP_SWITCH;
 import tzy.tinyPros.JVM07.instructions.control.TABLE_SWITCH;
+import tzy.tinyPros.JVM07.instructions.control.rtn.*;
 import tzy.tinyPros.JVM07.instructions.conversions.d2x.D2F;
 import tzy.tinyPros.JVM07.instructions.conversions.d2x.D2I;
 import tzy.tinyPros.JVM07.instructions.conversions.d2x.D2L;
@@ -87,7 +91,7 @@ import tzy.tinyPros.JVM07.instructions.stores.lstore.*;
  **/
 public class InstructionMapper {
     public static Instruction acquireInstruction(byte opcode) {
-        switch (opcode){
+        switch (opcode) {
             case 0x00:
                 return new NOP();
             case 0x01:
@@ -124,12 +128,12 @@ public class InstructionMapper {
                 return new BIPUSH();
             case 0x11:
                 return new SIPUSH();
-            // case 0x12:
-            // 	return &LDC{}
-            // case 0x13:
-            // 	return &LDC_W{}
-            // case 0x14:
-            // 	return &LDC2_W{}
+            case 0x12:
+                return new LDC();
+            case 0x13:
+                return new LDC_W();
+            case 0x14:
+                return new LDC2_W();
             case 0x15:
                 return new ILOAD();
             case 0x16:
@@ -432,38 +436,38 @@ public class InstructionMapper {
                 return new TABLE_SWITCH();
             case (byte) 0xab:
                 return new LOOKUP_SWITCH();
-            // case 0xac:
-            // 	return ireturn
-            // case 0xad:
-            // 	return lreturn
-            // case 0xae:
-            // 	return freturn
-            // case 0xaf:
-            // 	return dreturn
-            // case 0xb0:
-            // 	return areturn
-            // case 0xb1:
-            // 	return _return
+            case (byte) 0xac:
+                return new IRETURN();
+            case (byte) 0xad:
+                return new LRETURN();
+            case (byte) 0xae:
+                return new FRETURN();
+            case (byte) 0xaf:
+                return new DRETURN();
+            case (byte) 0xb0:
+                return new ARETURN();
+            case (byte) 0xb1:
+                return new RETURN();
             case (byte) 0xb2:
                 return new GET_STATIC();
-             case (byte) 0xb3:
-             	return new PUT_STATIC();
-             case (byte) 0xb4:
-             	return new GET_FIELD();
-             case (byte) 0xb5:
-             	return new PUT_FIELD();
-            //	case 0xb6:
-            //		return &INVOKE_VIRTUAL{}
-            // case 0xb7:
-            // 	return &INVOKE_SPECIAL{}
-            // case 0xb8:
-            // 	return &INVOKE_STATIC{}
-            // case 0xb9:
-            // 	return &INVOKE_INTERFACE{}
-            // case 0xba:
-            // 	return &INVOKE_DYNAMIC{}
-             case (byte) 0xbb:
-             	return new NEW();
+            case (byte) 0xb3:
+                return new PUT_STATIC();
+            case (byte) 0xb4:
+                return new GET_FIELD();
+            case (byte) 0xb5:
+                return new PUT_FIELD();
+            case (byte) 0xb6:
+                return new INVOKE_VIRTUAL();
+            case (byte) 0xb7:
+                return new INVOKE_SPECIAL();
+            case (byte) 0xb8:
+                return new INVOKE_STATIC();
+            case (byte) 0xb9:
+                return new INVOKE_INTERFACE();
+//             case (byte)0xba:
+//             	return new INVOKE_DYNAMIC();
+            case (byte) 0xbb:
+                return new NEW();
             // case 0xbc:
             // 	return &NEW_ARRAY{}
             // case 0xbd:
@@ -472,10 +476,10 @@ public class InstructionMapper {
             // 	return arraylength
             // case 0xbf:
             // 	return athrow
-             case (byte) 0xc0:
-             	return new CHECK_CAST();
-             case (byte) 0xc1:
-             	return new INSTANCE_OF();
+            case (byte) 0xc0:
+                return new CHECK_CAST();
+            case (byte) 0xc1:
+                return new INSTANCE_OF();
             // case 0xc2:
             // 	return monitorenter
             // case 0xc3:

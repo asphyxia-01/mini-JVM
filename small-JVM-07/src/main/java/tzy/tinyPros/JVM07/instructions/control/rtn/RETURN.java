@@ -1,15 +1,17 @@
-package tzy.tinyPros.JVM07.instructions.stores.lstore;
+package tzy.tinyPros.JVM07.instructions.control.rtn;
 
 import tzy.tinyPros.JVM07.instructions.base.NoOperandsInstruction;
 import tzy.tinyPros.JVM07.rtda.thread.Frame;
 
 /**
  * @author TPureZY
- * @since 2023/7/16 16:34
+ * @since 2023/7/22 15:27
  **/
-public class LSTORE_3 extends NoOperandsInstruction {
+public class RETURN extends NoOperandsInstruction {
     @Override
     public void execute(Frame frame) {
-        this._lstore(frame,3);
+        frame
+                .getThread()
+                .popFrame();
     }
 }

@@ -18,23 +18,35 @@ import java.util.Objects;
  **/
 public class Interpreter {
 
-    Interpreter(Method method) {
+    /**
+     * 只是用来对输出的信息行进行编号用的，对JVM实现没有任何相关
+     */
+    private static int line;
+
+    public static void interpret(Method method, boolean needLog) {
+        new Interpreter(method, needLog);
+    }
+
+    private Interpreter(Method method, boolean needLog) {
         // 模拟JVM创建主线程运行 main(String[] args) 方法
         Thread mainThread = new Thread();
         Frame frame = mainThread.newFrame(method);
         mainThread.pushFrame(frame);
-        loop(mainThread, method.code);
+        line = 0;
+        loop(mainThread, needLog);
     }
 
-    private void loop(Thread thread, byte[] code) {
-        Frame frame = thread.popFrame();
+    private void loop(Thread thread, boolean needLog) {
+        Frame frame;
         ByteReader br = new ByteReader();
 
         while (1 == 1) {
+            // 每次获取最新的栈帧
+            frame = thread.topFrame();
             int nextPC = frame.getNextPC();
             thread.setPc(nextPC);
-            // 取指
-            br.reset(code, nextPC);
+            // 取指，每次reset是因为有些指令会改变pc的前进方向，而这个改变最先作用于栈帧的pc寄存器，对于ByteReader则是不改变，需要reset一下，同时栈帧也有可能改变，比如调用其他方法时候会push一个新的栈帧
+            br.reset(frame.getMethod().code, nextPC);
             byte opcode = br.readByte();
             Instruction instruction = InstructionMapper.acquireInstruction(opcode);
             if (Objects.isNull(instruction)) {
@@ -43,13 +55,36 @@ public class Interpreter {
             }
             // 间指
             instruction.fetchOperands(br);
-            // PC++
+            // PC++，不过有时不是触发++，因为有的指令会改变pc寄存器的值
             frame.setNextPC(br.getPC());
             // 输出结果
-            System.out.println("寄存器(指令)：" + byteToHexString(new byte[]{opcode}) + " -> " + instruction.getClass().getSimpleName() + " => 局部变量表：" + JSON.toJSONString(frame.getOperandStack().getSlots()) + " 操作数栈：" + JSON.toJSONString(frame.getOperandStack().getSlots()));
+            if (needLog) {
+                printInstLog(frame, instruction, opcode);
+            }
             // 执行
             instruction.execute(frame);
+
+            // 这个line只是用来对输出的信息行进行编号用的，对JVM实现没有任何相关
+            line++;
+
+            if (thread.isStackEmpty()) {
+                break;
+            }
         }
+    }
+
+    private static void printInstLog(Frame frame, Instruction inst, byte opcode) {
+        // \33[32;4m表示改变字体, \33[{前景色代号(31~36) || 背景色代号(41~46)};{数字(1加粗、3斜体、4下划线)}m
+        System.out.printf(
+                "\33[34;1m%d Line :\33[0m %s.%s()\t寄存器(指令): %s -> %s => 局部变量表: %s 操作数栈: %s\n",
+                line,
+                frame.getMethod().clazz.name,
+                frame.getMethod().name,
+                byteToHexString(new byte[]{opcode}),
+                inst.getClass().getSimpleName(),
+                JSON.toJSONString(frame.getLocalVarsTable().slots),
+                JSON.toJSONString(frame.getOperandStack().getSlots())
+        );
     }
 
     private static String byteToHexString(byte[] codes) {

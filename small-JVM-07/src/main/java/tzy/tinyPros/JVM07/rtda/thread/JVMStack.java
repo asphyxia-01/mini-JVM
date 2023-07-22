@@ -46,4 +46,8 @@ public class JVMStack {
         }
         return this.top;
     }
+
+    public boolean isEmpty() {
+        return this.curDepth == 0;
+    }
 }

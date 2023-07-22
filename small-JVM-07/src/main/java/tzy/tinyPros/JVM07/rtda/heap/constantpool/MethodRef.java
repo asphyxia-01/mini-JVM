@@ -38,7 +38,7 @@ public class MethodRef extends MemberRef {
         if (ans == null) {
             throw new NoSuchMethodError();
         }
-        if (ans.isAccessibleTo(visitor)) {
+        if (!ans.isAccessibleTo(visitor)) {
             throw new IllegalAccessError();
         }
         this.method = ans;

@@ -63,4 +63,10 @@ public class Frame {
         this.nextPC = var0;
     }
 
+    /**
+     * 恢复到读取这一条指令之前，thread中会记录当前正在执行的指令的pc
+     */
+    public void revertNextPC() {
+        this.nextPC = this.thread.getPc();
+    }
 }

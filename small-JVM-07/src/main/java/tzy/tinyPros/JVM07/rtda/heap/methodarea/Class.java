@@ -37,6 +37,11 @@ public class Class {
      */
     public Slots staticVars;
 
+    /**
+     * 是否初始化过，这里主要指进行静态初始化和静态代码块的执行
+     */
+    private boolean clinitStarted;
+
     public Class(ClassFile file) {
         this.accessFlags = file.getAccessFlags();
         this.name = file.getClassName();
@@ -101,6 +106,17 @@ public class Class {
         return "";
     }
 
+    /**
+     * 获取 clinit 类构造器方法
+     * <p>
+     * init is the (or one of the) constructor(s) for the instance, and non-static field initialization.
+     * <p>
+     * clinit are the static initialization blocks for the class, and static field initialization.
+     */
+    public Method getClinitMethod() {
+        return this.getStaticMethod("<clinit>", "()V");
+    }
+
     public Method getStaticMethod(String name, String descriptor) {
         for (Method method : this.methods) {
             if (method.name.equals(name) && method.descriptor.equals(descriptor)) {
@@ -152,6 +168,14 @@ public class Class {
             }
         }
         return false;
+    }
+
+    public boolean isClinitStarted() {
+        return this.clinitStarted;
+    }
+
+    public void startClinit() {
+        this.clinitStarted = true;
     }
 
 }

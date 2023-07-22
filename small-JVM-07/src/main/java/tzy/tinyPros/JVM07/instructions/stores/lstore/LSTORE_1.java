@@ -10,6 +10,6 @@ import tzy.tinyPros.JVM07.rtda.thread.Frame;
 public class LSTORE_1 extends NoOperandsInstruction {
     @Override
     public void execute(Frame frame) {
-        this._istore(frame,1);
+        this._lstore(frame,1);
     }
 }

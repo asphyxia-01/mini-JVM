@@ -1,0 +1,3 @@
+先从指令操作数获取一个非int类型数据，将其拓展（*）为int后push到操作数栈中
+bipush：从指令操作数中获取一个byte类型拓展成int后push
+sipush：从指令操作数中获取一个short类型拓展程int后push

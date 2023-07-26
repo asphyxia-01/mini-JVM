@@ -2,6 +2,7 @@ package tzy.tinyPros.JVM08.rtda.heap;
 
 import tzy.tinyPros.JVM08.classfile.ClassFile;
 import tzy.tinyPros.JVM08.classpath.Classpath;
+import tzy.tinyPros.JVM08.rtda.heap.constantpool.AccessFlags;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.RunTimeConstantPool;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Field;
@@ -43,12 +44,21 @@ public class ClassLoader {
         if (this.classMap.containsKey(className)) {
             return this.classMap.get(className);
         }
-        try {
-            return this.loadNonArrayClass(className);
-        } catch (Exception e) {
-            e.printStackTrace();
+        Class clazz = null;
+        // 数组类描述符以'['开头
+        if (className.charAt(0) == '[') {
+            clazz = this.loadArrayClass(className);
+        } else {
+            try {
+                clazz = this.loadNonArrayClass(className);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        if (clazz != null) {
+            this.classMap.put(clazz.name, clazz);
+        }
+        return clazz;
     }
 
     /**
@@ -66,6 +76,20 @@ public class ClassLoader {
         return clazz;
     }
 
+    private Class loadArrayClass(String className) {
+        return new Class(
+                AccessFlags.ACC_PUBLIC,
+                className,
+                this,
+                true,
+                this.loadClass("java/lang/Object"),
+                new Class[]{
+                        this.loadClass("java/lang/Cloneable"),
+                        this.loadClass("java/io/Serializable")
+                }
+        );
+    }
+
     /**
      * parseClass()将字节码转为Class结构体
      * <p>
@@ -81,8 +105,7 @@ public class ClassLoader {
         // 解析超类（也就是父类）
         this.resolveSuperClass(clazz);
         // 解析接口表
-        this.resolveinterfaces(clazz);
-        this.classMap.put(clazz.name, clazz);
+        this.resolveInterfaces(clazz);
         return clazz;
     }
 
@@ -105,7 +128,7 @@ public class ClassLoader {
     /**
      * 解析接口的符号引用，然后加载对应的接口
      */
-    private void resolveinterfaces(Class clazz) {
+    private void resolveInterfaces(Class clazz) {
         int length = clazz.interfaceNames.length;
         if (length > 0) {
             clazz.interfaces = new Class[length];

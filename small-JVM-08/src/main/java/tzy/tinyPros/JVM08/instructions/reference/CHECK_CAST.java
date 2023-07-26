@@ -2,6 +2,7 @@ package tzy.tinyPros.JVM08.instructions.reference;
 
 import tzy.tinyPros.JVM08.instructions.base.Index16Instruction;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.ClassRef;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.ClassHierarchy;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Object;
 import tzy.tinyPros.JVM08.rtda.thread.Frame;
 import tzy.tinyPros.JVM08.rtda.thread.OperandStack;
@@ -29,7 +30,7 @@ public class CHECK_CAST extends Index16Instruction {
             return;
         }
         ClassRef cr = (ClassRef) frame.getMethod().clazz.runTimeConstantPool.constants[this.getIdx()];
-        if (!ref.isInstanceOf(cr.getClazz())) {
+        if (!ClassHierarchy.getClassHierarchy(ref.clazz).isAssignableFrom(cr.getClazz())) {
             throw new ClassCastException();
         }
     }

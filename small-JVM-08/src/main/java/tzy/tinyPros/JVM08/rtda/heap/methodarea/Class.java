@@ -5,6 +5,8 @@ import tzy.tinyPros.JVM08.rtda.heap.constantpool.AccessFlags;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.RunTimeConstantPool;
 import tzy.tinyPros.JVM08.rtda.heap.ClassLoader;
 
+import java.util.Arrays;
+
 /**
  * @author TPureZY
  * @since 2023/7/18 16:27
@@ -42,6 +44,28 @@ public class Class {
      */
     private boolean clinitStarted;
 
+    /**
+     * 数组类 运行时由JVM生成
+     */
+    public Class(int accessFlags, String name, ClassLoader loader, boolean clinitStarted, Class superClass, Class[] interfaces) {
+        this.accessFlags = accessFlags;
+        this.name = name;
+        this.loader = loader;
+        this.clinitStarted = clinitStarted;
+        this.superClass = superClass;
+        this.superClassName = superClass.name;
+        this.interfaces = interfaces;
+        this.interfaceNames = Arrays.stream(interfaces).map(var -> var.name).toArray(String[]::new);
+
+        // 数组类没有这三者
+        this.runTimeConstantPool = null;
+        this.fields = null;
+        this.methods = null;
+    }
+
+    /**
+     * 普通类 来自于.class文件
+     */
     public Class(ClassFile file) {
         this.accessFlags = file.getAccessFlags();
         this.name = file.getClassName();
@@ -84,6 +108,10 @@ public class Class {
         return 0 != (this.accessFlags & AccessFlags.ACC_ENUM);
     }
 
+    public boolean isArray() {
+        return this.name.charAt(0) == '[';
+    }
+
     public Slots getStaticVars() {
         return this.staticVars;
     }
@@ -117,7 +145,7 @@ public class Class {
         return this.getStaticMethod("<clinit>", "()V");
     }
 
-    public Method getStaticMethod(String name, String descriptor) {
+    private Method getStaticMethod(String name, String descriptor) {
         for (Method method : this.methods) {
             if (method.name.equals(name) && method.descriptor.equals(descriptor)) {
                 return method;
@@ -134,6 +162,24 @@ public class Class {
         // 通过Class类生成对象
         return new Object(this);
     }
+
+    /**
+     * B assignableFrom A 表示类B是从类A分派来的，即类B是类A的子类，类A是类B的超类
+     *
+     * @param other
+     * @return
+     */
+    public boolean isAssignableFrom(Class other) {
+        if (this == other) {
+            return true;
+        }
+        if (!other.isInterface()) {
+            return this.isExtendFrom(other);
+        } else {
+            return this.isImplementFrom(other);
+        }
+    }
+
 
     /**
      * 是否是other的子类
@@ -178,4 +224,84 @@ public class Class {
         this.clinitStarted = true;
     }
 
+    public Field getField(String name, String desc, boolean isStatic) {
+        for (Class cur = this; cur != null; cur = cur.superClass) {
+            for (Field field : cur.fields) {
+                if (
+                        field.isStatic() == isStatic
+                                && field.name.equals(name)
+                                && field.descriptor.equals(desc)
+                ) {
+                    return field;
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean isJLObject() {
+        return this.name.equals("java/lang/Object");
+    }
+
+    public boolean isJLCloneable() {
+        return this.name.equals("java/lang/Cloneable");
+    }
+
+    public boolean isJIOSerializable() {
+        return this.name.endsWith("java/io/Serializable");
+    }
+
+    public Class transformAndGetArrayClass() {
+        return this
+                .loader
+                .loadClass(
+                        ClassNameHelper
+                                .getArrayClassName(
+                                        this
+                                                .name
+                                )
+                );
+    }
+
+    public Class getComponentClassFromArrayClass() {
+        return this
+                .loader
+                .loadClass(
+                        ClassNameHelper
+                                .getComponentClassName(
+                                        this
+                                                .name
+                                )
+                );
+    }
+
+    /**
+     * 创建数组类实例
+     *
+     * @param count 数组长度
+     */
+    public Object newArray(int count) {
+        if (!this.isArray()) {
+            throw new RuntimeException("Not array class " + this.name);
+        }
+        switch (this.name) {
+            case "[Z":
+            case "[B":
+                return new Object(this, new byte[count]);
+            case "[C":
+                return new Object(this, new char[count]);
+            case "[S":
+                return new Object(this, new short[count]);
+            case "[I":
+                return new Object(this, new int[count]);
+            case "[J":
+                return new Object(this, new long[count]);
+            case "[F":
+                return new Object(this, new float[count]);
+            case "[D":
+                return new Object(this, new double[count]);
+            default:
+                return new Object(this, new Object[count]);
+        }
+    }
 }

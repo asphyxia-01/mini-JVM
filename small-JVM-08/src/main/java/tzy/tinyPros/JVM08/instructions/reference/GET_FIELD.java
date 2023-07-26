@@ -37,20 +37,20 @@ public class GET_FIELD extends Index16Instruction {
             case "C":
             case "S":
             case "I":
-                stack.pushInt(ref.fields.getInt(field.slotId));
+                stack.pushInt(ref.fields().getInt(field.slotId));
                 break;
             case "F":
-                stack.pushFloat(ref.fields.getFloat(field.slotId));
+                stack.pushFloat(ref.fields().getFloat(field.slotId));
                 break;
             case "J":
-                stack.pushLong(ref.fields.getLong(field.slotId));
+                stack.pushLong(ref.fields().getLong(field.slotId));
                 break;
             case "D":
-                stack.pushDouble(ref.fields.getDouble(field.slotId));
+                stack.pushDouble(ref.fields().getDouble(field.slotId));
                 break;
             case "L":
             case "[":
-                stack.pushRef(ref.fields.getRef(field.slotId));
+                stack.pushRef(ref.fields().getRef(field.slotId));
                 break;
             default:
                 break;

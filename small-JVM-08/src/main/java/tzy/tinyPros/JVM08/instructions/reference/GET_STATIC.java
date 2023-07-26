@@ -1,5 +1,6 @@
 package tzy.tinyPros.JVM08.instructions.reference;
 
+import tzy.tinyPros.JVM08.instructions.base.ClassLogicClinit;
 import tzy.tinyPros.JVM08.instructions.base.Index16Instruction;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.FieldRef;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Field;
@@ -17,6 +18,12 @@ public class GET_STATIC extends Index16Instruction {
     public void execute(Frame frame) {
         FieldRef ref = (FieldRef) frame.getMethod().clazz.runTimeConstantPool.constants[this.getIdx()];
         Field field = ref.resolvedField();
+        // 没有初始化
+        if (!field.clazz.isClinitStarted()) {
+            frame.revertNextPC();
+            ClassLogicClinit.clinitClass(frame.getThread(), field.clazz);
+            return;
+        }
         // 如果操作的不是static就报错
         if (!field.isStatic()) {
             throw new IncompatibleClassChangeError();

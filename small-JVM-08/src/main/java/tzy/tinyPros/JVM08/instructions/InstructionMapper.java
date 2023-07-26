@@ -37,6 +37,7 @@ import tzy.tinyPros.JVM08.instructions.extended.IFNULL;
 import tzy.tinyPros.JVM08.instructions.extended.WIDE;
 import tzy.tinyPros.JVM08.instructions.loads.iload.*;
 import tzy.tinyPros.JVM08.instructions.loads.lload.*;
+import tzy.tinyPros.JVM08.instructions.loads.taload.*;
 import tzy.tinyPros.JVM08.instructions.math.add.DADD;
 import tzy.tinyPros.JVM08.instructions.math.add.FADD;
 import tzy.tinyPros.JVM08.instructions.math.add.IADD;
@@ -82,6 +83,7 @@ import tzy.tinyPros.JVM08.instructions.stores.dstore.*;
 import tzy.tinyPros.JVM08.instructions.stores.fstore.*;
 import tzy.tinyPros.JVM08.instructions.stores.istore.*;
 import tzy.tinyPros.JVM08.instructions.stores.lstore.*;
+import tzy.tinyPros.JVM08.instructions.stores.tastore.*;
 
 /**
  * @author TPureZY
@@ -184,22 +186,22 @@ public class InstructionMapper {
                 return new ALOAD_2();
             case 0x2d:
                 return new ALOAD_3();
-            // case 0x2e:
-            // 	return iaload
-            // case 0x2f:
-            // 	return laload
-            // case 0x30:
-            // 	return faload
-            // case 0x31:
-            // 	return daload
-            // case 0x32:
-            // 	return aaload
-            // case 0x33:
-            // 	return baload
-            // case 0x34:
-            // 	return caload
-            // case 0x35:
-            // 	return saload
+            case 0x2e:
+                return new IALOAD();
+            case 0x2f:
+                return new LALOAD();
+            case 0x30:
+                return new FALOAD();
+            case 0x31:
+                return new DALOAD();
+            case 0x32:
+                return new AALOAD();
+            case 0x33:
+                return new BALOAD();
+            case 0x34:
+                return new CALOAD();
+            case 0x35:
+                return new SALOAD();
             case 0x36:
                 return new ISTORE();
             case 0x37:
@@ -250,22 +252,22 @@ public class InstructionMapper {
                 return new ASTORE_2();
             case 0x4e:
                 return new ASTORE_3();
-            // case 0x4f:
-            // 	return iastore
-            // case 0x50:
-            // 	return lastore
-            // case 0x51:
-            // 	return fastore
-            // case 0x52:
-            // 	return dastore
-            // case 0x53:
-            // 	return aastore
-            // case 0x54:
-            // 	return bastore
-            // case 0x55:
-            // 	return castore
-            // case 0x56:
-            // 	return sastore
+            case 0x4f:
+                return new IASTORE();
+            case 0x50:
+                return new LASTORE();
+            case 0x51:
+                return new FASTORE();
+            case 0x52:
+                return new DASTORE();
+            case 0x53:
+                return new AASTORE();
+            case 0x54:
+                return new BASTORE();
+            case 0x55:
+                return new CASTORE();
+            case 0x56:
+                return new SASTORE();
             case 0x57:
                 return new POP();
             case 0x58:
@@ -468,12 +470,12 @@ public class InstructionMapper {
 //             	return new INVOKE_DYNAMIC();
             case (byte) 0xbb:
                 return new NEW();
-            // case 0xbc:
-            // 	return &NEW_ARRAY{}
-            // case 0xbd:
-            // 	return &ANEW_ARRAY{}
-            // case 0xbe:
-            // 	return arraylength
+            case (byte) 0xbc:
+                return new NEW_ARRAY();
+            case (byte) 0xbd:
+                return new ANEW_ARRAY();
+            case (byte) 0xbe:
+                return new ARRAY_LENGTH();
             // case 0xbf:
             // 	return athrow
             case (byte) 0xc0:
@@ -486,8 +488,8 @@ public class InstructionMapper {
             // 	return monitorexit
             case (byte) 0xc4:
                 return new WIDE();
-            // case 0xc5:
-            // 	return &MULTI_ANEW_ARRAY{}
+            case (byte) 0xc5:
+                return new MULTI_ANEW_ARRAY();
             case (byte) 0xc6:
                 return new IFNULL();
             case (byte) 0xc7:

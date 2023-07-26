@@ -57,12 +57,12 @@ public class Interpreter {
             instruction.fetchOperands(br);
             // PC++，不过有时不是触发++，因为有的指令会改变pc寄存器的值
             frame.setNextPC(br.getPC());
+            // 执行
+            instruction.execute(frame);
             // 输出结果
             if (needLog) {
                 printInstLog(frame, instruction, opcode);
             }
-            // 执行
-            instruction.execute(frame);
 
             // 这个line只是用来对输出的信息行进行编号用的，对JVM实现没有任何相关
             line++;

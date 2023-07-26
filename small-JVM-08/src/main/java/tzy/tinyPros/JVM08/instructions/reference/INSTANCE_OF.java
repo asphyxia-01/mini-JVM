@@ -2,6 +2,7 @@ package tzy.tinyPros.JVM08.instructions.reference;
 
 import tzy.tinyPros.JVM08.instructions.base.Index16Instruction;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.ClassRef;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.ClassHierarchy;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Object;
 import tzy.tinyPros.JVM08.rtda.thread.Frame;
 
@@ -22,7 +23,7 @@ public class INSTANCE_OF extends Index16Instruction {
             frame.getOperandStack().pushInt(0);
             return;
         }
-        if (ref.isInstanceOf(cr.getClazz())) {
+        if (ClassHierarchy.getClassHierarchy(ref.clazz).isAssignableFrom(cr.getClazz())) {
             frame.getOperandStack().pushInt(1);
         } else {
             frame.getOperandStack().pushInt(0);

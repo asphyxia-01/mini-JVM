@@ -1,5 +1,6 @@
 package tzy.tinyPros.JVM08.instructions.reference;
 
+import tzy.tinyPros.JVM08.instructions.base.ClassLogicClinit;
 import tzy.tinyPros.JVM08.instructions.base.Index16Instruction;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.FieldRef;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.RunTimeConstantPool;
@@ -24,13 +25,22 @@ public class PUT_STATIC extends Index16Instruction {
         RunTimeConstantPool rp = curClass.runTimeConstantPool;
         FieldRef fr = (FieldRef) rp.constants[this.getIdx()];
         Field field = fr.resolvedField();
+        // 如果没有静态初始化则先初始化
+        if (!field.clazz.isClinitStarted()) {
+            frame.revertNextPC();
+            ClassLogicClinit.clinitClass(frame.getThread(), field.clazz);
+            return;
+        }
         // 如果操作的不是static就报错
         if (!field.isStatic()) {
             throw new IncompatibleClassChangeError();
         }
-        // 对于final类型的变量除了 构造器可以初始化 其他地方不能再次赋值
+        // 对于final类型的变量除了 构造器 可以初始化 其他地方不能再次赋值
         if (field.isFinal()) {
-            throw new IllegalAccessError();
+            if (!(("<clinit>".equals(frame.getMethod().name))
+                    && curClass == field.clazz)) {
+                throw new IllegalAccessError();
+            }
         }
         Class fClass = field.clazz;
         int slotId = field.slotId;

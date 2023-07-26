@@ -86,8 +86,15 @@ public class OperandStack {
         return this.slots[this.top--];
     }
 
+    private Slot cloneSlot(Slot slot) {
+        Slot newSlot = new Slot();
+        newSlot.setNum(slot.getNum());
+        newSlot.setRef(slot.getRef(false));
+        return newSlot;
+    }
+
     public void pushSlot(Slot slot) {
-        this.slots[++this.top] = slot;
+        this.slots[++this.top] = this.cloneSlot(slot);
     }
 
     public Slot[] getSlots() {

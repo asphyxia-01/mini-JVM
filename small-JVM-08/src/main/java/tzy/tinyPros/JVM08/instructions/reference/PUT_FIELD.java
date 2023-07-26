@@ -43,32 +43,32 @@ public class PUT_FIELD extends Index16Instruction {
                 int val0 = stack.popInt();
                 Object intObj = stack.popRef();
                 assert intObj != null : "操作对象不能是Null";
-                intObj.fields.setInt(slotId, val0);
+                intObj.fields().setInt(slotId, val0);
                 break;
             case "F":
                 float val1 = stack.popFloat();
                 Object floatObj = stack.popRef();
                 assert floatObj != null : "操作对象不能是Null";
-                floatObj.fields.setFloat(slotId, val1);
+                floatObj.fields().setFloat(slotId, val1);
                 break;
             case "J":
                 long val2 = stack.popLong();
                 Object longObj = stack.popRef();
                 assert longObj != null : "操作对象不能是Null";
-                longObj.fields.setLong(slotId, val2);
+                longObj.fields().setLong(slotId, val2);
                 break;
             case "D":
                 double val3 = stack.popDouble();
                 Object doubleObj = stack.popRef();
                 assert doubleObj != null : "操作对象不能是Null";
-                doubleObj.fields.setDouble(slotId, val3);
+                doubleObj.fields().setDouble(slotId, val3);
                 break;
             case "L":
             case "[":
                 Object val4 = stack.popRef();
                 Object refObj = stack.popRef();
                 assert refObj != null : "操作对象不能是Null";
-                refObj.fields.setRef(slotId, val4);
+                refObj.fields().setRef(slotId, val4);
                 break;
             default:
                 break;

@@ -2,7 +2,15 @@ package tzy.tinyPros.JVM08;
 
 public class Offer51 {
 
+    static final String val = "hello world";
+
     public static void main(String[] args) {
+        if (args != null) {
+            for (String arg : args) {
+                System.out.println(arg);
+            }
+        }
+        System.out.println(val);
         System.out.println(new Offer51().reversePairs(new int[]{1, 2, 4, 3, 7, 6, 4, 1, 8, 3}));
     }
 

@@ -4,6 +4,8 @@ import tzy.tinyPros.JVM08.classpath.Classpath;
 import tzy.tinyPros.JVM08.rtda.heap.ClassLoader;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Method;
 
+import java.util.List;
+
 /**
  * @author TPureZY
  * @since 2023/7/4 0:31
@@ -44,7 +46,8 @@ public class Main {
                         )
                         .getMainMethod();
         assert mainMethod != null : "Main method not found in class " + cmd.getMainClass();
-        Interpreter.interpret(mainMethod, cmd.getverboseInstFlag().get());
+        List<String> args = cmd.getAppArgs().orElse(null);
+        Interpreter.interpret(mainMethod, cmd.getverboseInstFlag().get(), args == null ? null : args.toArray(new String[0]));
     }
 
 }

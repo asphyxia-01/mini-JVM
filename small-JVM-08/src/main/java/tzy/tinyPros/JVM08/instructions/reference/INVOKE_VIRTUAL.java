@@ -3,9 +3,8 @@ package tzy.tinyPros.JVM08.instructions.reference;
 import tzy.tinyPros.JVM08.instructions.base.Index16Instruction;
 import tzy.tinyPros.JVM08.instructions.base.MethodLogicInvoke;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.MethodRef;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.*;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Method;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.MethodLookup;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Object;
 import tzy.tinyPros.JVM08.rtda.thread.Frame;
 import tzy.tinyPros.JVM08.rtda.thread.OperandStack;
@@ -78,6 +77,11 @@ public class INVOKE_VIRTUAL extends Index16Instruction {
                 break;
             case "(D)V":
                 System.out.println(stack.popDouble());
+                break;
+            case "(Ljava/lang/String;)V":
+                System.out.println(
+                        StringPool.convertAndGetOriginalUtf8(stack.popRef())
+                );
                 break;
             default:
                 System.out.println(descriptor);

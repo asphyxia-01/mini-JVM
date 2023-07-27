@@ -4,7 +4,11 @@ import com.alibaba.fastjson.JSON;
 import tzy.tinyPros.JVM08.instructions.InstructionMapper;
 import tzy.tinyPros.JVM08.instructions.base.ByteReader;
 import tzy.tinyPros.JVM08.instructions.base.Instruction;
+import tzy.tinyPros.JVM08.rtda.heap.ClassLoader;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Method;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Object;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.StringPool;
 import tzy.tinyPros.JVM08.rtda.thread.Frame;
 import tzy.tinyPros.JVM08.rtda.thread.Thread;
 
@@ -23,17 +27,29 @@ public class Interpreter {
      */
     private static int line;
 
-    public static void interpret(Method method, boolean needLog) {
-        new Interpreter(method, needLog);
+    public static void interpret(Method method, boolean needLog, String[] args) {
+        new Interpreter(method, needLog, args);
     }
 
-    private Interpreter(Method method, boolean needLog) {
+    private Interpreter(Method method, boolean needLog, String[] args) {
         // 模拟JVM创建主线程运行 main(String[] args) 方法
         Thread mainThread = new Thread();
         Frame frame = mainThread.newFrame(method);
         mainThread.pushFrame(frame);
+        if (args != null) {
+            frame.getLocalVarsTable().setRef(0, this.convertOriginalToJavaStrObj(frame.getMethod().clazz.loader, args));
+        }
         line = 0;
         loop(mainThread, needLog);
+    }
+
+    private Object convertOriginalToJavaStrObj(ClassLoader cl, String[] args) {
+        Class arrClass = cl.loadClass("[java/lang/String");
+        Object arrObj = arrClass.newArray(args.length);
+        for (int i = 0; i < args.length; i++) {
+            arrObj.refs()[i] = StringPool.convertAndGetJavaInternStrObj(cl, args[i]);
+        }
+        return arrObj;
     }
 
     private void loop(Thread thread, boolean needLog) {
@@ -57,12 +73,12 @@ public class Interpreter {
             instruction.fetchOperands(br);
             // PC++，不过有时不是触发++，因为有的指令会改变pc寄存器的值
             frame.setNextPC(br.getPC());
-            // 执行
-            instruction.execute(frame);
-            // 输出结果
+            // 执行前状况
             if (needLog) {
                 printInstLog(frame, instruction, opcode);
             }
+            // 执行
+            instruction.execute(frame);
 
             // 这个line只是用来对输出的信息行进行编号用的，对JVM实现没有任何相关
             line++;

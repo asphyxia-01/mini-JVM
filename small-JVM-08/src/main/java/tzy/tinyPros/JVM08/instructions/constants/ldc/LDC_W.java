@@ -1,6 +1,7 @@
 package tzy.tinyPros.JVM08.instructions.constants.ldc;
 
 import tzy.tinyPros.JVM08.instructions.base.Index16Instruction;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.StringPool;
 import tzy.tinyPros.JVM08.rtda.thread.Frame;
 
 /**
@@ -25,6 +26,17 @@ public class LDC_W extends Index16Instruction {
             frame
                     .getOperandStack()
                     .pushFloat((Float) val);
+        }
+        if (val instanceof String) {
+            frame
+                    .getOperandStack()
+                    .pushRef(
+                            StringPool
+                                    .convertAndGetJavaInternStrObj(
+                                            frame.getMethod().clazz.loader,
+                                            (String) val
+                                    )
+                    );
         }
     }
 }

@@ -7,6 +7,7 @@ import tzy.tinyPros.JVM08.rtda.heap.constantpool.RunTimeConstantPool;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Field;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Slots;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.StringPool;
 
 import java.util.HashMap;
 
@@ -251,7 +252,11 @@ public class ClassLoader {
                     staticVars.setDouble(slotId, (Double) val2);
                     break;
                 case "Ljava/lang/String":
-                    System.out.println("TODO");
+                    staticVars.setRef(
+                            slotId,
+                            StringPool.convertAndGetJavaInternStrObj(this, (String) rp.constants[rpId])
+                    );
+                    break;
             }
         }
     }

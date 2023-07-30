@@ -26,5 +26,6 @@ public class LDC2_W extends Index16Instruction {
                     .getOperandStack()
                     .pushDouble((Double) val);
         }
+        throw new ClassFormatError();
     }
 }

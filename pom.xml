@@ -17,6 +17,7 @@
         <module>small-JVM-06</module>
         <module>small-JVM-07</module>
         <module>small-JVM-08</module>
+        <module>small-JVM-09</module>
     </modules>
 
     <properties>

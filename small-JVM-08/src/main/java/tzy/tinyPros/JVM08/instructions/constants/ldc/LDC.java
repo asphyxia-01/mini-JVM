@@ -40,5 +40,7 @@ public class LDC extends Index8Instruction {
                                     )
                     );
         }
+
+        throw new RuntimeException("todo ldc");
     }
 }

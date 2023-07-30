@@ -38,5 +38,6 @@ public class LDC_W extends Index16Instruction {
                                     )
                     );
         }
+        throw new RuntimeException("todo ldc");
     }
 }

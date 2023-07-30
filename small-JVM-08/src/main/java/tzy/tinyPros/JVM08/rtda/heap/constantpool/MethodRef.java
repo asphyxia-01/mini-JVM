@@ -1,7 +1,7 @@
 package tzy.tinyPros.JVM08.rtda.heap.constantpool;
 
 import tzy.tinyPros.JVM08.classfile.constantpool.impl.ConstantMemberRefInfo;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Method;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.MethodLookup;
 
@@ -29,8 +29,8 @@ public class MethodRef extends MemberRef {
     }
 
     private void resolveMethodRef() {
-        Class visitor = this.runTimeConstantPool.clazz;
-        Class holder = this.getClazz();
+        Klass visitor = this.runTimeConstantPool.clazz;
+        Klass holder = this.getClazz();
         if (holder.isInterface()) {
             throw new IncompatibleClassChangeError();
         }
@@ -44,7 +44,7 @@ public class MethodRef extends MemberRef {
         this.method = ans;
     }
 
-    private Method lookupMethod(Class clazz, String name, String descriptor) {
+    private Method lookupMethod(Klass clazz, String name, String descriptor) {
         Method ans = MethodLookup.loopupMethodInClass(clazz, name, descriptor);
         if (ans == null) {
             // 在这种情况下访问起始入口不能是接口，但是方法最终归属可以是接口，所以需要查找一下

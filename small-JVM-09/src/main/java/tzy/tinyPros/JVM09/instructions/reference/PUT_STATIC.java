@@ -4,7 +4,7 @@ import tzy.tinyPros.JVM09.instructions.base.ClassLogicClinit;
 import tzy.tinyPros.JVM09.instructions.base.Index16Instruction;
 import tzy.tinyPros.JVM09.rtda.heap.constantpool.FieldRef;
 import tzy.tinyPros.JVM09.rtda.heap.constantpool.RunTimeConstantPool;
-import tzy.tinyPros.JVM09.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM09.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.Field;
 import tzy.tinyPros.JVM09.rtda.thread.Frame;
 import tzy.tinyPros.JVM09.rtda.thread.OperandStack;
@@ -21,7 +21,7 @@ public class PUT_STATIC extends Index16Instruction {
     @Override
     public void execute(Frame frame) {
         OperandStack stack = frame.getOperandStack();
-        Class curClass = frame.getMethod().clazz;
+        Klass curClass = frame.getMethod().clazz;
         RunTimeConstantPool rp = curClass.runTimeConstantPool;
         FieldRef fr = (FieldRef) rp.constants[this.getIdx()];
         Field field = fr.resolvedField();
@@ -42,7 +42,7 @@ public class PUT_STATIC extends Index16Instruction {
                 throw new IllegalAccessError();
             }
         }
-        Class fClass = field.clazz;
+        Klass fClass = field.clazz;
         int slotId = field.slotId;
 
         switch (field.descriptor.substring(0, 1)) {

@@ -12,9 +12,9 @@ public class ClassMember {
     public final int accessFlags;
     public final String name;
     public final String descriptor;
-    public final Class clazz;
+    public final Klass clazz;
 
-    public ClassMember(MemberInfo info, Class clazz){
+    public ClassMember(MemberInfo info, Klass clazz){
         this.accessFlags = info.getAccessFlags();
         this.name = info.getName();
         this.descriptor = info.getDescriptor();
@@ -48,7 +48,7 @@ public class ClassMember {
     /**
      * 判断当前字段能否被 Class var0 访问
      */
-    public boolean isAccessibleTo(Class var0){
+    public boolean isAccessibleTo(Klass var0){
         if(this.isPublic()){
             return true;
         }

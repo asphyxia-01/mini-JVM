@@ -21,11 +21,13 @@ public class LDC_W extends Index16Instruction {
             frame
                     .getOperandStack()
                     .pushInt((Integer) val);
+            return;
         }
         if (val instanceof Float) {
             frame
                     .getOperandStack()
                     .pushFloat((Float) val);
+            return;
         }
         if (val instanceof String) {
             frame
@@ -37,6 +39,7 @@ public class LDC_W extends Index16Instruction {
                                             (String) val
                                     )
                     );
+            return;
         }
         throw new RuntimeException("todo ldc");
     }

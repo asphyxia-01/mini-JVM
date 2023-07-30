@@ -5,7 +5,7 @@ import tzy.tinyPros.JVM08.instructions.InstructionMapper;
 import tzy.tinyPros.JVM08.instructions.base.ByteReader;
 import tzy.tinyPros.JVM08.instructions.base.Instruction;
 import tzy.tinyPros.JVM08.rtda.heap.ClassLoader;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Method;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Object;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.StringPool;
@@ -44,7 +44,7 @@ public class Interpreter {
     }
 
     private Object convertOriginalToJavaStrObj(ClassLoader cl, String[] args) {
-        Class arrClass = cl.loadClass("[java/lang/String");
+        Klass arrClass = cl.loadClass("[java/lang/String");
         Object arrObj = arrClass.newArray(args.length);
         for (int i = 0; i < args.length; i++) {
             arrObj.refs()[i] = StringPool.convertAndGetJavaInternStrObj(cl, args[i]);

@@ -8,7 +8,7 @@ package tzy.tinyPros.JVM08.rtda.heap.methodarea;
  **/
 public class Object {
 
-    public final Class clazz;
+    public final Klass clazz;
 
     /**
      * 普通类就是 fields Slots
@@ -20,7 +20,7 @@ public class Object {
     /**
      * 普通类
      */
-    public Object(Class clazz) {
+    public Object(Klass clazz) {
         this.clazz = clazz;
         this.data = new Slots(clazz.instanceSlotCount);
     }
@@ -28,7 +28,7 @@ public class Object {
     /**
      * 数组类
      */
-    public Object(Class clazz, java.lang.Object data) {
+    public Object(Klass clazz, java.lang.Object data) {
         this.clazz = clazz;
         this.data = data;
     }
@@ -40,7 +40,7 @@ public class Object {
     /**
      * 子类或类本身
      */
-    public boolean isInstanceOf(Class clazz) {
+    public boolean isInstanceOf(Klass clazz) {
         return this.clazz.isAssignableFrom(clazz);
     }
 

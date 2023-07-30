@@ -1,24 +1,17 @@
-package tzy.tinyPros.JVM08.instructions.constants.ldc;
+package tzy.tinyPros.JVM09.instructions.constants.ldc;
 
-import tzy.tinyPros.JVM08.instructions.base.Index8Instruction;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.StringPool;
-import tzy.tinyPros.JVM08.rtda.thread.Frame;
+import tzy.tinyPros.JVM09.instructions.base.ByteReader;
+import tzy.tinyPros.JVM09.instructions.base.Instruction;
+import tzy.tinyPros.JVM09.rtda.heap.constantpool.ClassRef;
+import tzy.tinyPros.JVM09.rtda.heap.methodarea.StringPool;
+import tzy.tinyPros.JVM09.rtda.thread.Frame;
 
 /**
  * @author TPureZY
- * @since 2023/7/20 19:54
- * <p>
- * 从运行时常量池中加载常量值并推入操作数栈
+ * @since 2023/7/31 0:34
  **/
-public class LDC extends Index8Instruction {
-    @Override
-    public void execute(Frame frame) {
-        Object val
-                =
-                frame
-                        .getMethod()
-                        .clazz.runTimeConstantPool
-                        .constants[this.getIdx()];
+public class AbstractLDC {
+    protected void _ldc_or_ldc_w(Frame frame, Object val) {
         if (val instanceof Integer) {
             frame
                     .getOperandStack()
@@ -43,7 +36,15 @@ public class LDC extends Index8Instruction {
                     );
             return;
         }
-
+        // ldc指令加载非基本类型的Class对象到操作数栈中
+        if (val instanceof ClassRef) {
+            frame
+                    .getOperandStack()
+                    .pushRef(
+                            ((ClassRef) val).getClazz().getJavaClassObj()
+                    );
+            return;
+        }
         throw new RuntimeException("todo ldc");
     }
 }

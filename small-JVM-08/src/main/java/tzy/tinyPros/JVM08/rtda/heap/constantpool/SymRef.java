@@ -2,7 +2,7 @@ package tzy.tinyPros.JVM08.rtda.heap.constantpool;
 
 import tzy.tinyPros.JVM08.classfile.constantpool.impl.ConstantClassInfo;
 import tzy.tinyPros.JVM08.classfile.constantpool.impl.ConstantMemberRefInfo;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 
 /**
  * @author TPureZY
@@ -19,7 +19,7 @@ public class SymRef {
     /**
      * 被访问时候是通过的哪个类实例，在编译时候也就会记录那个类Class，但同样的子类可以访问父类字段和方法，所以常量池记录的不一定就是最直接的那个持有该字段或方法的类Class
      */
-    private Class clazz;
+    private Klass clazz;
 
     protected SymRef(RunTimeConstantPool runTimeConstantPool, ConstantMemberRefInfo info) {
         this.runTimeConstantPool = runTimeConstantPool;
@@ -43,7 +43,7 @@ public class SymRef {
     /**
      * 用到时再加载所属的类
      */
-    public Class getClazz() {
+    public Klass getClazz() {
         parseClass();
         return this.clazz;
     }

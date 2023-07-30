@@ -1,6 +1,9 @@
 package tzy.tinyPros.JVM09.instructions.constants.ldc;
 
+import tzy.tinyPros.JVM09.instructions.base.ByteReader;
 import tzy.tinyPros.JVM09.instructions.base.Index8Instruction;
+import tzy.tinyPros.JVM09.instructions.base.Instruction;
+import tzy.tinyPros.JVM09.rtda.heap.constantpool.ClassRef;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.StringPool;
 import tzy.tinyPros.JVM09.rtda.thread.Frame;
 
@@ -10,7 +13,15 @@ import tzy.tinyPros.JVM09.rtda.thread.Frame;
  * <p>
  * 从运行时常量池中加载常量值并推入操作数栈
  **/
-public class LDC extends Index8Instruction {
+public class LDC extends AbstractLDC implements Instruction {
+    private int idx;
+
+    @Override
+    public void fetchOperands(ByteReader br) {
+        // 索引占1byte
+        this.idx = br.readByte();
+    }
+
     @Override
     public void execute(Frame frame) {
         Object val
@@ -18,32 +29,7 @@ public class LDC extends Index8Instruction {
                 frame
                         .getMethod()
                         .clazz.runTimeConstantPool
-                        .constants[this.getIdx()];
-        if (val instanceof Integer) {
-            frame
-                    .getOperandStack()
-                    .pushInt((Integer) val);
-            return;
-        }
-        if (val instanceof Float) {
-            frame
-                    .getOperandStack()
-                    .pushFloat((Float) val);
-            return;
-        }
-        if (val instanceof String) {
-            frame
-                    .getOperandStack()
-                    .pushRef(
-                            StringPool
-                                    .convertAndGetJavaInternStrObj(
-                                            frame.getMethod().clazz.loader,
-                                            (String) val
-                                    )
-                    );
-            return;
-        }
-
-        throw new RuntimeException("todo ldc");
+                        .constants[this.idx];
+        this._ldc_or_ldc_w(frame, val);
     }
 }

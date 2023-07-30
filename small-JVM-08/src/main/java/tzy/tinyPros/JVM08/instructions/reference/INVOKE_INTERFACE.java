@@ -4,7 +4,7 @@ import tzy.tinyPros.JVM08.instructions.base.ByteReader;
 import tzy.tinyPros.JVM08.instructions.base.Instruction;
 import tzy.tinyPros.JVM08.instructions.base.MethodLogicInvoke;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.MethodRef;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Method;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.MethodLookup;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Object;
@@ -36,9 +36,9 @@ public class INVOKE_INTERFACE implements Instruction {
 
     @Override
     public void execute(Frame frame) {
-        Class visitor = frame.getMethod().clazz;
+        Klass visitor = frame.getMethod().clazz;
         MethodRef mr = (MethodRef) visitor.runTimeConstantPool.constants[this.idx];
-        Class citeClass = mr.getClazz();
+        Klass citeClass = mr.getClazz();
         Method method = mr.resolvedMethod();
         if (method.isStatic() || method.isPrivate()) {
             throw new IncompatibleClassChangeError();

@@ -2,7 +2,7 @@ package tzy.tinyPros.JVM08.instructions.reference;
 
 import tzy.tinyPros.JVM08.instructions.base.Index16Instruction;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.ClassRef;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM08.rtda.thread.Frame;
 
 /**
@@ -21,7 +21,7 @@ public class ANEW_ARRAY extends Index16Instruction {
             throw new NegativeArraySizeException();
         }
         // 常量池中的是组成数组的类描述符，还需转换为引用数组的描述符
-        Class arrClass = ((ClassRef) frame.getMethod().clazz.runTimeConstantPool.constants[this.getIdx()]).getClazz().transformAndGetArrayClass();
+        Klass arrClass = ((ClassRef) frame.getMethod().clazz.runTimeConstantPool.constants[this.getIdx()]).getClazz().transformAndGetArrayClass();
         frame.getOperandStack().pushRef(arrClass.newArray(cnt));
     }
 }

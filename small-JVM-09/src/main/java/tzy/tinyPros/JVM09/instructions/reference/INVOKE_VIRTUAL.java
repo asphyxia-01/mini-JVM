@@ -4,7 +4,7 @@ import tzy.tinyPros.JVM09.instructions.base.Index16Instruction;
 import tzy.tinyPros.JVM09.instructions.base.MethodLogicInvoke;
 import tzy.tinyPros.JVM09.rtda.heap.constantpool.MethodRef;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.*;
-import tzy.tinyPros.JVM09.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM09.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.Object;
 import tzy.tinyPros.JVM09.rtda.thread.Frame;
 import tzy.tinyPros.JVM09.rtda.thread.OperandStack;
@@ -20,10 +20,10 @@ import tzy.tinyPros.JVM09.rtda.thread.OperandStack;
 public class INVOKE_VIRTUAL extends Index16Instruction {
     @Override
     public void execute(Frame frame) {
-        Class visitor = frame.getMethod().clazz;
+        Klass visitor = frame.getMethod().clazz;
         MethodRef mr = (MethodRef) visitor.runTimeConstantPool.constants[this.getIdx()];
         // 获取调用mr的引用的类型，这个类型一般都是对象变量的类型，因为多态，比如 A obj = new B()，记录还是A，所以后面还要根据隐式传入的 this 参数找到真正要调用的对象的方法，例子中即是B
-        Class citeClass = mr.getClazz();
+        Klass citeClass = mr.getClazz();
         // 这个method不一定是最终要调用的method，如上面的例子所示，是A的method，但是动态绑定实际要调用的是B的method
         Method method = mr.resolvedMethod();
         if (method.isStatic()) {

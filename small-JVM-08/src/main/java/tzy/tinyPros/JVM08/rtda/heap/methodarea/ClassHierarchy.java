@@ -5,13 +5,13 @@ package tzy.tinyPros.JVM08.rtda.heap.methodarea;
  * @since 2023/7/27 0:23
  **/
 public class ClassHierarchy {
-    private Class holder;
+    private Klass holder;
 
-    private ClassHierarchy(Class clazz) {
+    private ClassHierarchy(Klass clazz) {
         this.holder = clazz;
     }
 
-    public static ClassHierarchy getClassHierarchy(Class clazz) {
+    public static ClassHierarchy getClassHierarchy(Klass clazz) {
         return new ClassHierarchy(clazz);
     }
 
@@ -30,7 +30,7 @@ public class ClassHierarchy {
      * <p>
      * 3.2、TC和SC都是引用类型，且SC可以强转为TC
      */
-    public boolean isAssignableFrom(Class other) {
+    public boolean isAssignableFrom(Klass other) {
         if (holder == other) {
             return true;
         }
@@ -54,15 +54,15 @@ public class ClassHierarchy {
                     return other.isJLCloneable() || other.isJIOSerializable();
                 }
             } else {
-                Class holderComponent = holder.getComponentClassFromArrayClass();
-                Class otherComponent = other.getComponentClassFromArrayClass();
+                Klass holderComponent = holder.getComponentClassFromArrayClass();
+                Klass otherComponent = other.getComponentClassFromArrayClass();
                 return holderComponent == otherComponent
                         || holderComponent.isAssignableFrom(otherComponent);
             }
         }
     }
 
-    public boolean isImplementsFrom(Class otherInterface) {
+    public boolean isImplementsFrom(Klass otherInterface) {
         return this.holder.isImplementFrom(otherInterface);
     }
 }

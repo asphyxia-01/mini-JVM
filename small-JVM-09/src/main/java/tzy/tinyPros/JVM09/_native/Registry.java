@@ -1,5 +1,7 @@
 package tzy.tinyPros.JVM09._native;
 
+import tzy.tinyPros.JVM09._native.java.lang.*;
+
 import java.util.HashMap;
 import java.util.Map;
 

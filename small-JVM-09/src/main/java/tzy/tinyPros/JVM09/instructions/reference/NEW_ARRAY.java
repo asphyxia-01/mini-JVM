@@ -3,7 +3,7 @@ package tzy.tinyPros.JVM09.instructions.reference;
 import tzy.tinyPros.JVM09.instructions.base.Index8Instruction;
 import tzy.tinyPros.JVM09.rtda.thread.Frame;
 import tzy.tinyPros.JVM09.rtda.heap.ClassLoader;
-import tzy.tinyPros.JVM09.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM09.rtda.heap.methodarea.Klass;
 
 /**
  * newarray指令用来创建基本类型数组，
@@ -23,7 +23,7 @@ public class NEW_ARRAY extends Index8Instruction {
         if (cnt < 0) {
             throw new NegativeArraySizeException();
         }
-        Class arrClass = this.getPrimitiveArrayClass(
+        Klass arrClass = this.getPrimitiveArrayClass(
                 frame.getMethod().clazz.loader,
                 this.getIdx()
         );
@@ -34,7 +34,7 @@ public class NEW_ARRAY extends Index8Instruction {
                 );
     }
 
-    private Class getPrimitiveArrayClass(ClassLoader cr, int atype) {
+    private Klass getPrimitiveArrayClass(ClassLoader cr, int atype) {
         switch (atype) {
             case ArrayType.AT_BOOLEAN:
                 return cr.loadClass("[Z");

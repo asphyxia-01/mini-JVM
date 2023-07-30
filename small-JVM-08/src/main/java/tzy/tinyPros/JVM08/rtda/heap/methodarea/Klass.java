@@ -11,7 +11,7 @@ import java.util.Arrays;
  * @author TPureZY
  * @since 2023/7/18 16:27
  **/
-public class Class {
+public class Klass {
 
     public final int accessFlags;
     public final String name;
@@ -24,8 +24,8 @@ public class Class {
      * 存放类加载器指针
      */
     public ClassLoader loader;
-    public Class superClass;
-    public Class[] interfaces;
+    public Klass superClass;
+    public Klass[] interfaces;
     /**
      * 实例变量占用的空间大小
      */
@@ -47,7 +47,7 @@ public class Class {
     /**
      * 数组类 运行时由JVM生成
      */
-    public Class(int accessFlags, String name, ClassLoader loader, boolean clinitStarted, Class superClass, Class[] interfaces) {
+    public Klass(int accessFlags, String name, ClassLoader loader, boolean clinitStarted, Klass superClass, Klass[] interfaces) {
         this.accessFlags = accessFlags;
         this.name = name;
         this.loader = loader;
@@ -66,7 +66,7 @@ public class Class {
     /**
      * 普通类 来自于.class文件
      */
-    public Class(ClassFile file) {
+    public Klass(ClassFile file) {
         this.accessFlags = file.getAccessFlags();
         this.name = file.getClassName();
         this.superClassName = file.getSuperClassName();
@@ -121,7 +121,7 @@ public class Class {
      * <p>
      * 1.当前类是public的；2.同包（default）
      */
-    public boolean isAccessibleTo(Class other) {
+    public boolean isAccessibleTo(Klass other) {
         return this.isPublic() || this.getPackageName().equals(other.getPackageName());
     }
 
@@ -169,7 +169,7 @@ public class Class {
      * @param other
      * @return
      */
-    public boolean isAssignableFrom(Class other) {
+    public boolean isAssignableFrom(Klass other) {
         if (this == other) {
             return true;
         }
@@ -186,8 +186,8 @@ public class Class {
      * <p>
      * 由于是单继承，一个Class只能有一个SuperClass，但是SuperClass也还可以有个SuperClass，所以需要不断向上比对
      */
-    public boolean isExtendFrom(Class other) {
-        for (Class c = this.superClass; c != null; c = c.superClass) {
+    public boolean isExtendFrom(Klass other) {
+        for (Klass c = this.superClass; c != null; c = c.superClass) {
             if (c == other) {
                 return true;
             }
@@ -198,8 +198,8 @@ public class Class {
     /**
      * other是否是当前Class的父接口之一
      */
-    public boolean isImplementFrom(Class other) {
-        for (Class c = this; c != null; c = c.superClass) {
+    public boolean isImplementFrom(Klass other) {
+        for (Klass c = this; c != null; c = c.superClass) {
             if (c.isSubImplementFrom(other)) {
                 return true;
             }
@@ -207,8 +207,8 @@ public class Class {
         return false;
     }
 
-    public boolean isSubImplementFrom(Class other) {
-        for (Class item : this.interfaces) {
+    public boolean isSubImplementFrom(Klass other) {
+        for (Klass item : this.interfaces) {
             if (item == other || item.isSubImplementFrom(other)) {
                 return true;
             }
@@ -225,7 +225,7 @@ public class Class {
     }
 
     public Field getField(String name, String desc, boolean isStatic) {
-        for (Class cur = this; cur != null; cur = cur.superClass) {
+        for (Klass cur = this; cur != null; cur = cur.superClass) {
             for (Field field : cur.fields) {
                 if (
                         field.isStatic() == isStatic
@@ -251,7 +251,7 @@ public class Class {
         return this.name.endsWith("java/io/Serializable");
     }
 
-    public Class transformAndGetArrayClass() {
+    public Klass transformAndGetArrayClass() {
         return this
                 .loader
                 .loadClass(
@@ -263,7 +263,7 @@ public class Class {
                 );
     }
 
-    public Class getComponentClassFromArrayClass() {
+    public Klass getComponentClassFromArrayClass() {
         return this
                 .loader
                 .loadClass(

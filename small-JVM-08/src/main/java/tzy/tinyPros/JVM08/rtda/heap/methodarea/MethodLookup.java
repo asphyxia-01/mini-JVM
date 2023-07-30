@@ -5,8 +5,8 @@ package tzy.tinyPros.JVM08.rtda.heap.methodarea;
  * @since 2023/7/21 20:31
  **/
 public class MethodLookup {
-    public static Method loopupMethodInClass(Class clazz, String name, String descriptor) {
-        for (Class cur = clazz; cur != null; cur = cur.superClass) {
+    public static Method loopupMethodInClass(Klass clazz, String name, String descriptor) {
+        for (Klass cur = clazz; cur != null; cur = cur.superClass) {
             for (Method method : cur.methods) {
                 if (judge(method, name, descriptor)) {
                     return method;
@@ -16,8 +16,8 @@ public class MethodLookup {
         return null;
     }
 
-    public static Method loopupMethodInInterfaces(Class[] inters, String name, String descriptor) {
-        for (Class inter : inters) {
+    public static Method loopupMethodInInterfaces(Klass[] inters, String name, String descriptor) {
+        for (Klass inter : inters) {
             for (Method method : inter.methods) {
                 if (judge(method, name, descriptor)) {
                     return method;

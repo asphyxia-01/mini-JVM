@@ -28,7 +28,7 @@ public class Method extends ClassMember {
      */
     public final int argSlotCnt;
 
-    public Method(MemberInfo info, Class clazz) {
+    public Method(MemberInfo info, Klass clazz) {
         super(info, clazz);
         MethodDescriptor mDesc = MethodDescriptorParse.parseMethodDescriptorParser(info.getDescriptor());
         this.argSlotCnt = MethodDescriptor.calcArgSlotCount(mDesc, this.isStatic());
@@ -68,7 +68,7 @@ public class Method extends ClassMember {
         }
     }
 
-    public static Method[] newMethods(Class clazz, MemberInfo[] infos) {
+    public static Method[] newMethods(Klass clazz, MemberInfo[] infos) {
         Method[] methods = new Method[infos.length];
         for (int i = 0; i < methods.length; i++) {
             methods[i] = new Method(infos[i], clazz);

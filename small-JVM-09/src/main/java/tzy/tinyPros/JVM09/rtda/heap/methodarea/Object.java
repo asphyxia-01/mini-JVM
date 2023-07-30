@@ -4,11 +4,14 @@ package tzy.tinyPros.JVM09.rtda.heap.methodarea;
  * @author TPureZY
  * @since 2023/7/18 16:20
  * <p>
- * 这里的Object仅仅是表示对象的类，不是Java的Object，没有取代Java的Object的意思；作为底层JVM，这个Object是用来具现化对象的，fields表示对象实例的字段(/属性)，Class表示这个哪个类的对象实例
+ * 这里的Object仅仅是表示对象的类，不是Java的java/lang/Object，没有取代Java的Object的意思；作为底层JVM，这个Object是用来具现化对象的，fields表示对象实例的字段(/属性)，Klass表示这个哪个类的对象实例
  **/
 public class Object {
 
-    public final Class clazz;
+    /**
+     * 该对象在JVM中底层在方法区（元数据区）维护的Klass结构
+     */
+    public final Klass clazz;
 
     /**
      * 普通类就是 fields Slots
@@ -18,9 +21,17 @@ public class Object {
     public final java.lang.Object data;
 
     /**
+     * 如果当前对象是java/lang/Class对象（即 clazz.name == "java/lang/Class"），则extra存放的是与其绑定的Klass结构，表示当前Object对象是Java层面中哪个类的伴生Class对象，此时也可以写成<pre>{@code private Klass bindKlass}</pre>
+     * <p>
+     * <p>
+     * 每个类除了实例化的对象，都有一个伴生的Class对象（在Java层面就是java/lang/Class的实例对象，但绑定不同的底层Klass结构，相当于映射，以实现一个特殊功能如反射）
+     */
+    private java.lang.Object extra;
+
+    /**
      * 普通类
      */
-    public Object(Class clazz) {
+    public Object(Klass clazz) {
         this.clazz = clazz;
         this.data = new Slots(clazz.instanceSlotCount);
     }
@@ -28,7 +39,7 @@ public class Object {
     /**
      * 数组类
      */
-    public Object(Class clazz, java.lang.Object data) {
+    public Object(Klass clazz, java.lang.Object data) {
         this.clazz = clazz;
         this.data = data;
     }
@@ -40,7 +51,7 @@ public class Object {
     /**
      * 子类或类本身
      */
-    public boolean isInstanceOf(Class clazz) {
+    public boolean isInstanceOf(Klass clazz) {
         return this.clazz.isAssignableFrom(clazz);
     }
 
@@ -121,5 +132,13 @@ public class Object {
         }
 
         throw new RuntimeException("Not array");
+    }
+
+    public void setExtra(java.lang.Object obj) {
+        this.extra = obj;
+    }
+
+    public java.lang.Object getExtra() {
+        return this.extra;
     }
 }

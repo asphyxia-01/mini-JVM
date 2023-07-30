@@ -3,7 +3,7 @@ package tzy.tinyPros.JVM09.instructions.reference;
 import tzy.tinyPros.JVM09.instructions.base.Index16Instruction;
 import tzy.tinyPros.JVM09.instructions.base.MethodLogicInvoke;
 import tzy.tinyPros.JVM09.rtda.heap.constantpool.MethodRef;
-import tzy.tinyPros.JVM09.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM09.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.Method;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.MethodLookup;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.Object;
@@ -20,10 +20,10 @@ import tzy.tinyPros.JVM09.rtda.thread.Frame;
 public class INVOKE_SPECIAL extends Index16Instruction {
     @Override
     public void execute(Frame frame) {
-        Class visitor = frame.getMethod().clazz;
+        Klass visitor = frame.getMethod().clazz;
         MethodRef mr = (MethodRef) visitor.runTimeConstantPool.constants[this.getIdx()];
         // 声明该方法时候使用的类
-        Class holder = mr.getClazz();
+        Klass holder = mr.getClazz();
         Method method = mr.resolvedMethod();
 
         // 是否是调用构造方法

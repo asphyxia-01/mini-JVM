@@ -41,7 +41,7 @@ public class _Class {
     public void getPrimitiveClass(Frame frame) {
         Object ref = frame.getLocalVarsTable().getRef(0);
         String name = StringPool.convertAndGetOriginalUtf8(ref);
-        frame.getMethod().clazz.loader.loadClass(name).jClass();
+        frame.getOperandStack().pushRef(frame.getMethod().clazz.loader.loadClass(name).getJavaClassObj());
     }
 
 }

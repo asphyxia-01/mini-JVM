@@ -3,7 +3,7 @@ package tzy.tinyPros.JVM08.instructions.reference;
 import tzy.tinyPros.JVM08.instructions.base.Index16Instruction;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.FieldRef;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.RunTimeConstantPool;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Field;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Object;
 import tzy.tinyPros.JVM08.rtda.thread.Frame;
@@ -22,7 +22,7 @@ public class GET_FIELD extends Index16Instruction {
     @Override
     public void execute(Frame frame) {
         OperandStack stack = frame.getOperandStack();
-        Class curClass = frame.getMethod().clazz;
+        Klass curClass = frame.getMethod().clazz;
         RunTimeConstantPool rp = curClass.runTimeConstantPool;
         FieldRef fieldRef = (FieldRef) rp.constants[this.getIdx()];
         Field field = fieldRef.resolvedField();

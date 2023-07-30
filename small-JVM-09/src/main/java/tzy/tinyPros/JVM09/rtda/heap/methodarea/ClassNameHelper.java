@@ -14,7 +14,7 @@ public class ClassNameHelper {
      * <p>
      * 基本数据类型对应的Class中存储的名称是如：boolean 这样的小写全名
      */
-    static final Map<String, String> primitiveTypes = new HashMap<String, String>() {
+    public static final Map<String, String> primitiveTypes = new HashMap<String, String>() {
         {
             put("void", "V");
             put("boolean", "Z");

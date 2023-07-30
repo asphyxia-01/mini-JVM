@@ -20,11 +20,13 @@ public class LDC2_W extends Index16Instruction {
             frame
                     .getOperandStack()
                     .pushLong((Long) val);
+            return;
         }
         if (val instanceof Double) {
             frame
                     .getOperandStack()
                     .pushDouble((Double) val);
+            return;
         }
         throw new ClassFormatError();
     }

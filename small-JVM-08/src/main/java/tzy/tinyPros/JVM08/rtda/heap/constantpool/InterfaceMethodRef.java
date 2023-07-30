@@ -1,7 +1,7 @@
 package tzy.tinyPros.JVM08.rtda.heap.constantpool;
 
 import tzy.tinyPros.JVM08.classfile.constantpool.impl.ConstantMemberRefInfo;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Method;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.MethodLookup;
 
@@ -29,8 +29,8 @@ public class InterfaceMethodRef extends MemberRef {
     }
 
     private void resolveInterfaceMethodRef() {
-        Class visitor = this.runTimeConstantPool.clazz;
-        Class holder = this.getClazz();
+        Klass visitor = this.runTimeConstantPool.clazz;
+        Klass holder = this.getClazz();
         if (!holder.isInterface()) {
             throw new IncompatibleClassChangeError();
         }
@@ -44,7 +44,7 @@ public class InterfaceMethodRef extends MemberRef {
         this.method = ans;
     }
 
-    private Method lookupInterfaceMethod(Class clazz, String name, String descriptor) {
+    private Method lookupInterfaceMethod(Klass clazz, String name, String descriptor) {
         for (Method var0 : clazz.methods) {
             if (var0.name.equals(name) && var0.descriptor.equals(descriptor)) {
                 return var0;

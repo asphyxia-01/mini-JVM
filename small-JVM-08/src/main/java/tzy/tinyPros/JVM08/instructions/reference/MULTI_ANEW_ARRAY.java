@@ -3,7 +3,7 @@ package tzy.tinyPros.JVM08.instructions.reference;
 import tzy.tinyPros.JVM08.instructions.base.ByteReader;
 import tzy.tinyPros.JVM08.instructions.base.Instruction;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.ClassRef;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM08.rtda.thread.Frame;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Object;
 import tzy.tinyPros.JVM08.rtda.thread.OperandStack;
@@ -31,7 +31,7 @@ public class MULTI_ANEW_ARRAY implements Instruction {
 
     @Override
     public void execute(Frame frame) {
-        Class arrClass = ((ClassRef) frame.getMethod().clazz.runTimeConstantPool.constants[this.idx]).getClazz();
+        Klass arrClass = ((ClassRef) frame.getMethod().clazz.runTimeConstantPool.constants[this.idx]).getClazz();
         int[] lengthPerDimension = this.acquireAndCheckPerLength(frame.getOperandStack(), this.dimensions);
         Object arr = newMultiDimensionalArray(arrClass, lengthPerDimension);
         frame.getOperandStack().pushRef(arr);
@@ -48,7 +48,7 @@ public class MULTI_ANEW_ARRAY implements Instruction {
         return perLength;
     }
 
-    private Object newMultiDimensionalArray(Class arrClass, int[] perLength) {
+    private Object newMultiDimensionalArray(Klass arrClass, int[] perLength) {
         Object upArr = arrClass.newArray(perLength[0]);
         if (perLength.length > 1) {
             Object[] refs = upArr.refs();

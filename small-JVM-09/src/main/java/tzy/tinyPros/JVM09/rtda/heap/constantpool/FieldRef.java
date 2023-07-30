@@ -1,7 +1,7 @@
 package tzy.tinyPros.JVM09.rtda.heap.constantpool;
 
 import tzy.tinyPros.JVM09.classfile.constantpool.impl.ConstantMemberRefInfo;
-import tzy.tinyPros.JVM09.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM09.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.Field;
 
 /**
@@ -35,9 +35,9 @@ public class FieldRef extends MemberRef {
 
     private void resolveFieldRef() throws NoSuchFieldException, IllegalAccessException {
         // 持有这个字段的类
-        Class holder = this.getClazz();
+        Klass holder = this.getClazz();
         // 访问这个字段的类
-        Class visitor = this.runTimeConstantPool.clazz;
+        Klass visitor = this.runTimeConstantPool.clazz;
 
         this.field = this.lookupField(holder, this.name, this.descriptor);
         if (field == null) {
@@ -55,7 +55,7 @@ public class FieldRef extends MemberRef {
      * @param name       字段名称
      * @param descriptor 字段描述符
      */
-    private Field lookupField(Class holder, String name, String descriptor) {
+    private Field lookupField(Klass holder, String name, String descriptor) {
         // 终止条件
         if (holder == null) {
             return null;
@@ -67,7 +67,7 @@ public class FieldRef extends MemberRef {
             }
         }
         // 再找接口是否持有，接口中的默认都是static final修饰的字段
-        for (Class var1 : holder.interfaces) {
+        for (Klass var1 : holder.interfaces) {
             Field ans = this.lookupField(var1, name, descriptor);
             if (ans != null) {
                 return ans;

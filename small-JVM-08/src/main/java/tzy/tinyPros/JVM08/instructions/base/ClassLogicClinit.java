@@ -1,6 +1,6 @@
 package tzy.tinyPros.JVM08.instructions.base;
 
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Method;
 import tzy.tinyPros.JVM08.rtda.thread.Thread;
 
@@ -15,13 +15,13 @@ import tzy.tinyPros.JVM08.rtda.thread.Thread;
  * clinit are the static initialization blocks for the class, and static field initialization.
  **/
 public class ClassLogicClinit {
-    public static void clinitClass(Thread thread, Class clazz) {
+    public static void clinitClass(Thread thread, Klass clazz) {
         clazz.startClinit();
         scheduleClinit(thread, clazz);
         clinitSuperClass(thread, clazz);
     }
 
-    private static void scheduleClinit(Thread thread, Class clazz) {
+    private static void scheduleClinit(Thread thread, Klass clazz) {
         Method clinitMethod = clazz.getClinitMethod();
         if (null == clinitMethod) {
             return;
@@ -30,12 +30,12 @@ public class ClassLogicClinit {
         thread.pushFrame(thread.newFrame(clinitMethod));
     }
 
-    private static void clinitSuperClass(Thread thread, Class clazz) {
+    private static void clinitSuperClass(Thread thread, Klass clazz) {
         // 如果clazz是接口那么也会执行静态初始化，但是父接口不需要
         if (clazz.isInterface()) {
             return;
         }
-        Class superClass = clazz.superClass;
+        Klass superClass = clazz.superClass;
         if (superClass != null && !superClass.isClinitStarted()) {
             // 静态初始化父类
             clinitClass(thread, superClass);

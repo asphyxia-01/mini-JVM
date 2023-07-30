@@ -23,7 +23,7 @@ public class Field extends ClassMember {
     public final int constValueIndex;
     public int slotId;
 
-    public Field(Class clazz, MemberInfo info) {
+    public Field(Klass clazz, MemberInfo info) {
         super(info, clazz);
         if (info.getConstantValueAttributeInfo() != null) {
             this.constValueIndex = info.getConstantValueAttributeInfo().getConstantValueIdx();
@@ -32,7 +32,7 @@ public class Field extends ClassMember {
         }
     }
 
-    public static Field[] newFields(Class clazz, MemberInfo[] info) {
+    public static Field[] newFields(Klass clazz, MemberInfo[] info) {
         Field[] fields = new Field[info.length];
         for (int i = 0; i < fields.length; i++) {
             fields[i] = new Field(clazz, info[i]);

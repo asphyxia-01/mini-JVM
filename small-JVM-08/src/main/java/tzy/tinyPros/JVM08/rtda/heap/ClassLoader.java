@@ -4,7 +4,7 @@ import tzy.tinyPros.JVM08.classfile.ClassFile;
 import tzy.tinyPros.JVM08.classpath.Classpath;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.AccessFlags;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.RunTimeConstantPool;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Field;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Slots;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.StringPool;
@@ -34,18 +34,18 @@ public class ClassLoader {
     /**
      * 相当于方法区的具体实现，用来存储已被加载的类数据（字段、方法、方法字节码、运行时常量池）
      */
-    private HashMap<String, Class> classMap;
+    private HashMap<String, Klass> classMap;
 
     public ClassLoader(Classpath cp) {
         this.cp = cp;
         this.classMap = new HashMap<>();
     }
 
-    public Class loadClass(String className) {
+    public Klass loadClass(String className) {
         if (this.classMap.containsKey(className)) {
             return this.classMap.get(className);
         }
-        Class clazz = null;
+        Klass clazz = null;
         // 数组类描述符以'['开头
         if (className.charAt(0) == '[') {
             clazz = this.loadArrayClass(className);
@@ -67,24 +67,24 @@ public class ClassLoader {
      * <p>
      * 加载 -> 链接 (验证 -> 准备 -> 解析) -> 初始化(初始化只有实例化 new 时候才会执行)
      */
-    private Class loadNonArrayClass(String className) throws Exception {
+    private Klass loadNonArrayClass(String className) throws Exception {
         byte[] data = this.cp.readClass(className);
         if (data == null) {
             throw new ClassNotFoundException("not find class: " + className);
         }
-        Class clazz = this.defineClass(data);
+        Klass clazz = this.defineClass(data);
         link(clazz);
         return clazz;
     }
 
-    private Class loadArrayClass(String className) {
-        return new Class(
+    private Klass loadArrayClass(String className) {
+        return new Klass(
                 AccessFlags.ACC_PUBLIC,
                 className,
                 this,
                 true,
                 this.loadClass("java/lang/Object"),
-                new Class[]{
+                new Klass[]{
                         this.loadClass("java/lang/Cloneable"),
                         this.loadClass("java/io/Serializable")
                 }
@@ -98,9 +98,9 @@ public class ClassLoader {
      * <p>
      * 调用resolveSuperClass()和resolveInterfaces()方法解析这些符号引用同时加载这些类
      */
-    private Class defineClass(byte[] data) throws Exception {
+    private Klass defineClass(byte[] data) throws Exception {
         // 转为Class结构体
-        Class clazz = this.parseClass(data);
+        Klass clazz = this.parseClass(data);
         // 保存一个类加载器的指针
         clazz.loader = this;
         // 解析超类（也就是父类）
@@ -110,15 +110,15 @@ public class ClassLoader {
         return clazz;
     }
 
-    private Class parseClass(byte[] data) {
+    private Klass parseClass(byte[] data) {
         ClassFile classFile = new ClassFile(data);
-        return new Class(classFile);
+        return new Klass(classFile);
     }
 
     /**
      * 解析超类的符号引用，然后加载对应的超类
      */
-    private void resolveSuperClass(Class clazz) {
+    private void resolveSuperClass(Klass clazz) {
         // 只有java/lang/Object类没有超类，所以作为终止判定条件
         if (!clazz.name.equals("java/lang/Object")) {
             // 加载clazz的超类，除了java/lang/Object类以外其他任何类一定有超类s
@@ -129,10 +129,10 @@ public class ClassLoader {
     /**
      * 解析接口的符号引用，然后加载对应的接口
      */
-    private void resolveInterfaces(Class clazz) {
+    private void resolveInterfaces(Klass clazz) {
         int length = clazz.interfaceNames.length;
         if (length > 0) {
-            clazz.interfaces = new Class[length];
+            clazz.interfaces = new Klass[length];
             for (int i = 0; i < length; i++) {
                 clazz.interfaces[i] = clazz.loader.loadClass(clazz.interfaceNames[i]);
             }
@@ -144,7 +144,7 @@ public class ClassLoader {
      * <p>
      * 解析和上面对超类、接口的解析一样都是由符号引用加载完整的信息；在这里就是构建字段、方法等结构体。解析就是符号引用转为直接引用的过程，解析动作主要针对类、接口、字段、类方法、接口方法分别对应常量池中不同的 Constant_{?}Ref_Info
      */
-    private void link(Class clazz) {
+    private void link(Klass clazz) {
         // 验证
         verify(clazz);
         // 准备
@@ -156,11 +156,11 @@ public class ClassLoader {
      * <p>
      * JVM规范的4.10节做了对验证算法做了详细介绍，这里暂时不做实现
      */
-    private void verify(Class clazz) {
+    private void verify(Klass clazz) {
         // TODO：暂时不对类的验证算法做实现
     }
 
-    private void prepare(Class clazz) {
+    private void prepare(Klass clazz) {
         // 计算实例变量的个数并编号便于管理
         calcInstanceFieldSlotIds(clazz);
         // 计算类变量的个数并编号便于管理
@@ -169,7 +169,7 @@ public class ClassLoader {
         allocAndInitStaticVars(clazz);
     }
 
-    private void calcInstanceFieldSlotIds(Class clazz) {
+    private void calcInstanceFieldSlotIds(Klass clazz) {
         int slotId = 0;
         // 每个当前类的Class只会记录直接属于自己的字段，如果有超类，则子类字段的编号要延后，防止和超类字段编号相冲突
         // 不用考虑接口，因为接口中不能定义实例字段，都是默认 static final 的类字段
@@ -191,7 +191,7 @@ public class ClassLoader {
         clazz.instanceSlotCount = slotId;
     }
 
-    private void calcStaticFieldSlotIds(Class clazz) {
+    private void calcStaticFieldSlotIds(Klass clazz) {
         int slotId = 0;
         // 注意静态字段是类变量，直接属于某一具体类的，不会因为继承而归属于子类，不受继承、实现等的影响，每个类独立持有，其他类不会产生干扰
         for (Field field : clazz.fields) {
@@ -216,7 +216,7 @@ public class ClassLoader {
      * <p>
      * 但如果是被static和final修饰的则需要显式的初始化操作，部分数据如果是基本类型或者String类型，则在编译时候就可以知道，会存放在 .class 文件的常量池中，取出后赋值放到对应的slots的格子中即可(即初始化的表现)
      */
-    private void allocAndInitStaticVars(Class clazz) {
+    private void allocAndInitStaticVars(Klass clazz) {
         clazz.staticVars = new Slots(clazz.staticSlotCount);
         for (Field field : clazz.fields) {
             if (field.isStatic() && field.isFinal()) {
@@ -225,7 +225,7 @@ public class ClassLoader {
         }
     }
 
-    private void initStaticFinalVar(Class clazz, Field field) {
+    private void initStaticFinalVar(Klass clazz, Field field) {
         Slots staticVars = clazz.staticVars;
         // 在常量池中的索引
         int rpId = field.constValueIndex;

@@ -4,7 +4,7 @@ import tzy.tinyPros.JVM08.instructions.base.ClassLogicClinit;
 import tzy.tinyPros.JVM08.instructions.base.Index16Instruction;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.ClassRef;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.RunTimeConstantPool;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Object;
 import tzy.tinyPros.JVM08.rtda.thread.Frame;
 
@@ -19,7 +19,7 @@ public class NEW extends Index16Instruction {
     public void execute(Frame frame) {
         RunTimeConstantPool rp = frame.getMethod().clazz.runTimeConstantPool;
         ClassRef cr = (ClassRef) rp.constants[this.getIdx()];
-        Class clazz = cr.getClazz();
+        Klass clazz = cr.getClazz();
 
         if (!clazz.isClinitStarted()) {
             frame.revertNextPC();

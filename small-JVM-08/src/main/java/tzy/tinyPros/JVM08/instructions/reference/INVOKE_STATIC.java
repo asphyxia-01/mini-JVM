@@ -5,7 +5,7 @@ import tzy.tinyPros.JVM08.instructions.base.Index16Instruction;
 import tzy.tinyPros.JVM08.instructions.base.MethodLogicInvoke;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.MethodRef;
 import tzy.tinyPros.JVM08.rtda.heap.constantpool.RunTimeConstantPool;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM08.rtda.heap.methodarea.Method;
 import tzy.tinyPros.JVM08.rtda.thread.Frame;
 
@@ -25,7 +25,7 @@ public class INVOKE_STATIC extends Index16Instruction {
             throw new IncompatibleClassChangeError();
         }
 
-        Class clazz = method.clazz;
+        Klass clazz = method.clazz;
         if (!clazz.isClinitStarted()) {
             // 回退当前pc的位置，回到这条指令的起点
             frame.revertNextPC();

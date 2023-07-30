@@ -2,7 +2,7 @@ package tzy.tinyPros.JVM08.rtda.heap.constantpool;
 
 import tzy.tinyPros.JVM08.classfile.constantpool.ConstantInfo;
 import tzy.tinyPros.JVM08.classfile.constantpool.ConstantPool;
-import tzy.tinyPros.JVM08.rtda.heap.methodarea.Class;
+import tzy.tinyPros.JVM08.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM08.classfile.constantpool.impl.*;
 
 /**
@@ -18,10 +18,10 @@ public class RunTimeConstantPool {
     /**
      * 表明这个运行时常量池属于哪一个类
      */
-    public final Class clazz;
+    public final Klass clazz;
     public final Object[] constants;
 
-    public RunTimeConstantPool(Class clazz, ConstantPool cp) {
+    public RunTimeConstantPool(Klass clazz, ConstantPool cp) {
         int cnt = cp.getSize();
         this.clazz = clazz;
         this.constants = new Object[cnt];

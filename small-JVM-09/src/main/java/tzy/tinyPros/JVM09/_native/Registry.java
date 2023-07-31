@@ -1,6 +1,7 @@
 package tzy.tinyPros.JVM09._native;
 
 import tzy.tinyPros.JVM09._native.java.lang.*;
+import tzy.tinyPros.JVM09._native.sun.misc.VM;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,12 +17,13 @@ public class Registry {
      * JVM启动时候就加载本地方法并注册到registry上
      */
     public static void initNative() {
-        new _Class();
-        new _Double();
-        new _Float();
-        new _Object();
-        new _String();
-        new _System();
+        _Class.registerNow();
+        _Double.registerNow();
+        _Float.registerNow();
+        _Object.registerNow();
+        _String.registerNow();
+        _System.registerNow();
+        VM.registerNow();
     }
 
     /**

@@ -26,7 +26,7 @@ public class Slot {
 
     public Object getRef(boolean isDel) {
         Object ans = this.ref;
-        if(isDel){
+        if (isDel) {
             // 清除引用
             this.ref = null;
         }
@@ -35,5 +35,12 @@ public class Slot {
 
     public void setRef(Object ref) {
         this.ref = ref;
+    }
+
+    public Slot _clone() {
+        Slot newSlot = new Slot();
+        newSlot.setNum(this.getNum());
+        newSlot.setRef(this.getRef(false));
+        return newSlot;
     }
 }

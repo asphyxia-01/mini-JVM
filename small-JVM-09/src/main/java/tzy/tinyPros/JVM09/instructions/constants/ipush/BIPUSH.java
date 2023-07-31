@@ -14,7 +14,7 @@ public class BIPUSH implements Instruction {
 
     @Override
     public void fetchOperands(ByteReader br) {
-        this.data = br.readByte();
+        this.data = br.read1Byte();
     }
 
     @Override

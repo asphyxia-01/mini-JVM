@@ -50,7 +50,7 @@ public class INVOKE_VIRTUAL extends Index16Instruction {
         }
 
         // 由于动态绑定，这里查找调用的真正方法体
-        Method invokedMethod = MethodLookup.loopupMethodInClass(ref.clazz, mr.name, mr.descriptor);
+        Method invokedMethod = MethodLookup.lookupMethodInClass(ref.clazz, mr.name, mr.descriptor);
         if (invokedMethod == null && invokedMethod.isAbstract()) {
             throw invokedMethod == null ? new NoSuchMethodError() : new AbstractMethodError();
         }

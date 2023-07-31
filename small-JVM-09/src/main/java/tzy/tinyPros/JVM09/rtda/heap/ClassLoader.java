@@ -8,7 +8,6 @@ import tzy.tinyPros.JVM09.rtda.heap.methodarea.*;
 
 import java.lang.Object;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author TPureZY
@@ -23,11 +22,11 @@ import java.util.Map;
  **/
 public class ClassLoader {
 
-    private static class UsedInfo {
-        static final String JAVA_LANG_CLASS = "java/lang/Class";
-        static final String JAVA_LANG_OBJECT = "java/lang/Object";
-        static final String JAVA_LANG_CLONEABLE = "java/lang/Cloneable";
-        static final String JAVA_IO_SERIALIZABLE = "java/io/Serializable";
+    public static class UsedClassNameInfo {
+        public static final String JAVA_LANG_CLASS = "java/lang/Class";
+        public static final String JAVA_LANG_OBJECT = "java/lang/Object";
+        public static final String JAVA_LANG_CLONEABLE = "java/lang/Cloneable";
+        public static final String JAVA_IO_SERIALIZABLE = "java/io/Serializable";
     }
 
     /**
@@ -54,7 +53,7 @@ public class ClassLoader {
      * JVM 启动时候就会加载 java/lang/Class ，但之所以要遍历 classMap 原因如下：加载 java/lang/Class 时候会加载超类 java/lang/Object 以及一些接口类，这些先加载，然后每个加载的类都有个伴生 java/lang/Class 类对象，所以需要双向绑定，不同的 Klass 各自对应一个 java/lang/Class 的实例，同时伴生的实例也会绑定 Klass ， Klass 结构是 JVM 底层使用的，实例化的不同 java/lang/Class 对象是给 Java 层面使用的，相当于桥梁，总是伴随的 .class 文件中类的加载而实例化为对象与其绑定；注意其与加载的类的实例对象是无关的两个概念，前者是伴生对象，后者是程序员手动创建 new 的对象
      */
     public void loadBaseJClasses() {
-        Klass jClass = this.loadClass(UsedInfo.JAVA_LANG_CLASS);
+        Klass jClass = this.loadClass(UsedClassNameInfo.JAVA_LANG_CLASS);
         this.classMap.forEach((name, klass) -> {
             if (klass.getJavaClassObj() == null) {
                 // 双向绑定
@@ -82,7 +81,7 @@ public class ClassLoader {
                 this,
                 true
         );
-        clazz.setJavaClassObj(this.classMap.get(UsedInfo.JAVA_LANG_CLASS).newObject());
+        clazz.setJavaClassObj(this.classMap.get(UsedClassNameInfo.JAVA_LANG_CLASS).newObject());
         clazz.getJavaClassObj().setExtra(clazz);
         this.classMap.put(name, clazz);
     }
@@ -103,9 +102,11 @@ public class ClassLoader {
             }
         }
         if (clazz != null) {
-            clazz.setJavaClassObj(this.classMap.get(UsedInfo.JAVA_LANG_CLASS).newObject());
-            clazz.getJavaClassObj().setExtra(clazz);
             this.classMap.put(clazz.name, clazz);
+            if (this.classMap.containsKey(UsedClassNameInfo.JAVA_LANG_CLASS)) {
+                clazz.setJavaClassObj(this.classMap.get(UsedClassNameInfo.JAVA_LANG_CLASS).newObject());
+                clazz.getJavaClassObj().setExtra(clazz);
+            }
         }
         return clazz;
     }
@@ -131,10 +132,10 @@ public class ClassLoader {
                 className,
                 this,
                 true,
-                this.loadClass(UsedInfo.JAVA_LANG_OBJECT),
+                this.loadClass(UsedClassNameInfo.JAVA_LANG_OBJECT),
                 new Klass[]{
-                        this.loadClass(UsedInfo.JAVA_LANG_CLONEABLE),
-                        this.loadClass(UsedInfo.JAVA_IO_SERIALIZABLE)
+                        this.loadClass(UsedClassNameInfo.JAVA_LANG_CLONEABLE),
+                        this.loadClass(UsedClassNameInfo.JAVA_IO_SERIALIZABLE)
                 }
         );
     }
@@ -168,7 +169,7 @@ public class ClassLoader {
      */
     private void resolveSuperClass(Klass clazz) {
         // 只有java/lang/Object类没有超类，所以作为终止判定条件
-        if (!clazz.name.equals(UsedInfo.JAVA_LANG_OBJECT)) {
+        if (!clazz.name.equals(UsedClassNameInfo.JAVA_LANG_OBJECT)) {
             // 加载clazz的超类，除了java/lang/Object类以外其他任何类一定有超类s
             clazz.superClass = clazz.loader.loadClass(clazz.superClassName);
         }

@@ -14,7 +14,7 @@ public class Index16Instruction implements Instruction {
 
     @Override
     public void fetchOperands(ByteReader br) {
-        this.idx = br.readShort();
+        this.idx = br.read2Byte();
     }
 
     @Override
@@ -23,6 +23,11 @@ public class Index16Instruction implements Instruction {
     }
 
     public int getIdx() {
-        return idx;
+        int curIdx = this.idx;
+        // 作为索引不能为负
+        if (curIdx < 0) {
+            curIdx = curIdx & 0x000000ff;
+        }
+        return curIdx;
     }
 }

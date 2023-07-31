@@ -32,10 +32,10 @@ public class TABLE_SWITCH implements Instruction {
     public void fetchOperands(ByteReader br) {
         // 起始字节位置一定是4字节的倍数
         br.skipPadding();
-        this.defaultOffset = br.readInt();
-        this.low = br.readInt();
-        this.high = br.readInt();
-        this.jumpOffsets = br.readInts(this.high - this.low + 1);
+        this.defaultOffset = br.read4Byte();
+        this.low = br.read4Byte();
+        this.high = br.read4Byte();
+        this.jumpOffsets = br.readArrPer4Byte(this.high - this.low + 1);
     }
 
     @Override

@@ -20,31 +20,31 @@ public class ByteReader {
         return this.pc;
     }
 
-    public byte readByte() {
+    public byte read1Byte() {
         return this.code[pc++];
     }
 
-    public short readShort() {
-        short var0 = this.code[this.pc++];
-        short var1 = this.code[this.pc++];
+    public short read2Byte() {
+        short var0 = this.read1Byte();
+        short var1 = this.read1Byte();
         return (short) ((var0 << 8) | var1);
     }
 
-    public int readInt() {
-        int var0 = this.code[this.pc++];
-        int var1 = this.code[this.pc++];
-        int var2 = this.code[this.pc++];
-        int var3 = this.code[this.pc++];
+    public int read4Byte() {
+        int var0 = this.read1Byte();
+        int var1 = this.read1Byte();
+        int var2 = this.read1Byte();
+        int var3 = this.read1Byte();
         return (var0 << 24) | (var1 << 16) | (var2 << 8) | var3;
     }
 
     /**
      * 主要用在 tableswitch 和 lookupswitch 指令
      */
-    public int[] readInts(int len) {
+    public int[] readArrPer4Byte(int len) {
         int[] ints = new int[len];
         for (int i = 0; i < len; i++) {
-            ints[i] = this.readInt();
+            ints[i] = this.read4Byte();
         }
         return ints;
     }

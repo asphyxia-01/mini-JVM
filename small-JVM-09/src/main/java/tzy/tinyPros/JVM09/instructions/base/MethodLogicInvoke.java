@@ -21,15 +21,6 @@ public class MethodLogicInvoke {
         Frame newFrame = thread.newFrame(method);
         thread.pushFrame(newFrame);
 
-        // 如果是本地方法则不需要入栈
-        if (method.isNative()) {
-            if ("registerNatives".equals(method.name)) {
-                thread.popFrame();
-            } else {
-                throw new RuntimeException("native method " + method.name);
-            }
-        }
-
         int argSlotCnt = method.argSlotCnt;
         // 除了静态方法，其他方法至少一个参数，如 this 指针
         if (argSlotCnt > 0) {

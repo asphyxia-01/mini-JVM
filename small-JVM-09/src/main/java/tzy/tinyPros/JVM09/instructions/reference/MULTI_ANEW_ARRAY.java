@@ -25,8 +25,8 @@ public class MULTI_ANEW_ARRAY implements Instruction {
 
     @Override
     public void fetchOperands(ByteReader br) {
-        this.idx = br.readShort();
-        this.dimensions = br.readByte();
+        this.idx = br.read2Byte();
+        this.dimensions = br.read1Byte();
     }
 
     @Override

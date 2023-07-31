@@ -1,5 +1,6 @@
 package tzy.tinyPros.JVM09;
 
+import tzy.tinyPros.JVM09._native.Registry;
 import tzy.tinyPros.JVM09.classpath.Classpath;
 import tzy.tinyPros.JVM09.rtda.heap.ClassLoader;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.Method;
@@ -26,28 +27,28 @@ public class Main {
 
     public static void startJVM(Cmd cmd) {
         // Java中命名空间中类的全类名和classpath组合就是目标文件的路径，组合时候将全类名的'.'全部更改为'/'
-        Method mainMethod
-                =
-                new ClassLoader(
-                        new Classpath(
-                                cmd
-                                        .getJre()
-                                        .orElse(null),
-                                cmd
-                                        .getClasspath()
-                                        .orElse(null)
-                        )
+        Method mainMethod = new ClassLoader(
+                new Classpath(
+                        cmd.getJre().orElse(null),
+                        cmd.getClasspath().orElse(null)
                 )
-                        .loadClass(
-                                cmd
-                                        .getMainClass()
-                                        .get()
-                                        .replace(".", "/")
-                        )
-                        .getMainMethod();
+        ).loadClass(
+                cmd.getMainClass().get().replace(".", "/")
+        ).getMainMethod();
+
         assert mainMethod != null : "Main method not found in class " + cmd.getMainClass();
+
+        // 注册本地方法
+        Registry.initNative();
+
         List<String> args = cmd.getAppArgs().orElse(null);
-        Interpreter.interpret(mainMethod, cmd.getverboseInstFlag().get(), args == null ? null : args.toArray(new String[0]));
+
+        // 解释执行
+        Interpreter.interpret(
+                mainMethod,
+                cmd.getverboseInstFlag().get(),
+                args == null ? null : args.toArray(new String[0])
+        );
     }
 
 }

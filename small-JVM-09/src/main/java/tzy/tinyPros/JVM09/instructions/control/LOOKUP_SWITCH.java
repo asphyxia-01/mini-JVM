@@ -21,9 +21,9 @@ public class LOOKUP_SWITCH implements Instruction {
     @Override
     public void fetchOperands(ByteReader br) {
         br.skipPadding();
-        this.defaultOffset = br.readInt();
-        this.npairs = br.readInt();
-        this.matchOffsets = br.readInts(this.npairs * 2);
+        this.defaultOffset = br.read4Byte();
+        this.npairs = br.read4Byte();
+        this.matchOffsets = br.readArrPer4Byte(this.npairs * 2);
     }
 
     @Override

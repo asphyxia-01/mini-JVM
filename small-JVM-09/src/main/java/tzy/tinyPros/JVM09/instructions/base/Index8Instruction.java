@@ -15,7 +15,7 @@ public class Index8Instruction implements Instruction {
 
     @Override
     public void fetchOperands(ByteReader br) {
-        this.idx = br.readByte();
+        this.idx = br.read1Byte();
     }
 
     @Override
@@ -49,10 +49,15 @@ public class Index8Instruction implements Instruction {
     }
 
     public int getIdx() {
-        return idx;
+        int curIdx = this.idx;
+        // 作为索引不能为负
+        if (curIdx < 0) {
+            curIdx = curIdx & 0x000000ff;
+        }
+        return curIdx;
     }
 
-    public void setIdx(int idx){
+    public void setIdx(int idx) {
         this.idx = idx;
     }
 }

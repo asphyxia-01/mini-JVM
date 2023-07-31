@@ -1,5 +1,7 @@
 package tzy.tinyPros.JVM09.rtda.heap.methodarea;
 
+import com.beust.jcommander.Parameter;
+
 /**
  * @author TPureZY
  * @since 2023/7/18 16:20
@@ -18,7 +20,7 @@ public class Object {
      * <p>
      * 数组类就是 data T[]
      */
-    public final java.lang.Object data;
+    public java.lang.Object data;
 
     /**
      * 如果当前对象是java/lang/Class对象（即 clazz.name == "java/lang/Class"），则extra存放的是与其绑定的Klass结构，表示当前Object对象是Java层面中哪个类的伴生Class对象，此时也可以写成<pre>{@code private Klass bindKlass}</pre>
@@ -141,4 +143,9 @@ public class Object {
     public java.lang.Object getExtra() {
         return this.extra;
     }
+
+    public Object _clone() {
+        return ObjectCloneHelper.cloneObj(this, this.clazz.isArray());
+    }
+
 }

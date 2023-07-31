@@ -4,6 +4,7 @@ import tzy.tinyPros.JVM09.classfile.ClassFile;
 import tzy.tinyPros.JVM09.rtda.heap.constantpool.AccessFlags;
 import tzy.tinyPros.JVM09.rtda.heap.constantpool.RunTimeConstantPool;
 import tzy.tinyPros.JVM09.rtda.heap.ClassLoader;
+import tzy.tinyPros.JVM09.rtda.thread.Slot;
 
 import java.util.Arrays;
 
@@ -141,8 +142,8 @@ public class Klass {
         return this.name.charAt(0) == '[';
     }
 
-    public Slots getStaticVars() {
-        return this.staticVars;
+    public boolean isPrimitive() {
+        return ClassNameHelper.primitiveTypes.containsKey(this.name);
     }
 
     /**
@@ -174,13 +175,25 @@ public class Klass {
         return this.getStaticMethod("<clinit>", "()V");
     }
 
-    private Method getStaticMethod(String name, String descriptor) {
-        for (Method method : this.methods) {
-            if (method.name.equals(name) && method.descriptor.equals(descriptor)) {
-                return method;
+    public Method getStaticMethod(String name, String descriptor) {
+        return this.getMethod(name, descriptor, true);
+    }
+
+    public Method getInstanceMethod(String name, String descriptor) {
+        return this.getMethod(name, descriptor, false);
+    }
+
+    public Method getMethod(String name, String descriptor, boolean isStatic) {
+        for (Klass cur = this; cur != null; cur = cur.superClass) {
+            if (cur.methods != null) {
+                for (Method method : cur.methods) {
+                    if (method.isStatic() == isStatic && method.name.equals(name) && method.descriptor.equals(descriptor)) {
+                        return method;
+                    }
+                }
             }
         }
-        return null;
+        throw new RuntimeException("method not find: " + name + " " + descriptor);
     }
 
     public Method getMainMethod() {
@@ -283,25 +296,13 @@ public class Klass {
     public Klass transformAndGetArrayClass() {
         return this
                 .loader
-                .loadClass(
-                        ClassNameHelper
-                                .getArrayClassName(
-                                        this
-                                                .name
-                                )
-                );
+                .loadClass(ClassNameHelper.getArrayClassName(this.name));
     }
 
     public Klass getComponentClassFromArrayClass() {
         return this
                 .loader
-                .loadClass(
-                        ClassNameHelper
-                                .getComponentClassName(
-                                        this
-                                                .name
-                                )
-                );
+                .loadClass(ClassNameHelper.getComponentClassName(this.name));
     }
 
     /**

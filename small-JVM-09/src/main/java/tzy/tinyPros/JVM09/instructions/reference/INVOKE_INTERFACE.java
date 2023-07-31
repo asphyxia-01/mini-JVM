@@ -3,6 +3,7 @@ package tzy.tinyPros.JVM09.instructions.reference;
 import tzy.tinyPros.JVM09.instructions.base.ByteReader;
 import tzy.tinyPros.JVM09.instructions.base.Instruction;
 import tzy.tinyPros.JVM09.instructions.base.MethodLogicInvoke;
+import tzy.tinyPros.JVM09.rtda.heap.constantpool.InterfaceMethodRef;
 import tzy.tinyPros.JVM09.rtda.heap.constantpool.MethodRef;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.Method;
@@ -27,19 +28,19 @@ public class INVOKE_INTERFACE implements Instruction {
     @Override
     public void fetchOperands(ByteReader br) {
         // 方法引用索引
-        this.idx = br.readShort();
+        this.idx = br.read2Byte();
         // 参数个数（没用）
-        br.readByte();
+        br.read1Byte();
         // 保留值
-        br.readByte();
+        br.read1Byte();
     }
 
     @Override
     public void execute(Frame frame) {
         Klass visitor = frame.getMethod().clazz;
-        MethodRef mr = (MethodRef) visitor.runTimeConstantPool.constants[this.idx];
+        InterfaceMethodRef mr = (InterfaceMethodRef) visitor.runTimeConstantPool.constants[this.idx];
         Klass citeClass = mr.getClazz();
-        Method method = mr.resolvedMethod();
+        Method method = mr.resolvedInterfaceMethod();
         if (method.isStatic() || method.isPrivate()) {
             throw new IncompatibleClassChangeError();
         }
@@ -51,7 +52,7 @@ public class INVOKE_INTERFACE implements Instruction {
             throw new IncompatibleClassChangeError();
         }
         // 因为动态绑定，此处找到要调用的真实方法
-        Method invokedMethod = MethodLookup.loopupMethodInClass(ref.clazz, mr.name, mr.descriptor);
+        Method invokedMethod = MethodLookup.lookupMethodInClass(ref.clazz, mr.name, mr.descriptor);
         if (invokedMethod == null && invokedMethod.isAbstract()) {
             throw invokedMethod == null ? new NoSuchMethodError() : new AbstractMethodError();
         }

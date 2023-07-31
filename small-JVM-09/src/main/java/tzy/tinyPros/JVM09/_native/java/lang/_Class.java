@@ -1,7 +1,8 @@
 package tzy.tinyPros.JVM09._native.java.lang;
 
-import tzy.tinyPros.JVM09._native.NativeMethod;
-import tzy.tinyPros.JVM09._native.Registry;
+import tzy.tinyPros.JVM09._native.MethodInfo;
+import tzy.tinyPros.JVM09._native.Need2Register;
+import tzy.tinyPros.JVM09.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.Object;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.StringPool;
 import tzy.tinyPros.JVM09.rtda.thread.Frame;
@@ -10,28 +11,34 @@ import tzy.tinyPros.JVM09.rtda.thread.Frame;
  * @author TPureZY
  * @since 2023/7/30 17:12
  **/
-public class _Class {
+public class _Class extends Need2Register {
     /**
      * 这里内部定义的本地方法主要为{@code trigger4JClassName}使用
      */
-    private static final String trigger4JClassName = "java/lang/Class";
+    private static final String TRIGGER_4_CLASSNAME = "java/lang/Class";
 
-    private class MethodInfo2Register {
-        static final String METHOD_1 = "getPrimitiveClass";
-        static final String PARAMS_RETURN_1 = "(Ljava/lang/String;)Ljava/lang/Class;";
-        static final String METHOD_2 = "getName0";
-        static final String PARAMS_RETURN_2 = "()Ljava/lang/String;";
-        static final String METHOD_3 = "desiredAssertionStatus0";
-        static final String PARAMS_RETURN_3 = "(Ljava/lang/Class;)Z";
-        static final String METHOD_4 = "registerNatives";
-        static final String PARAMS_RETURN_4 = "()V";
+    {
+        this.methodInfo2Register.put(
+                new MethodInfo("getPrimitiveClass", "(Ljava/lang/String;)Ljava/lang/Class;"),
+                this::getPrimitiveClass
+        );
+        this.methodInfo2Register.put(
+                new MethodInfo("getName0", "()Ljava/lang/String;"),
+                this::getName0
+        );
+        this.methodInfo2Register.put(
+                new MethodInfo("desiredAssertionStatus0", "(Ljava/lang/Class;)Z"),
+                this::desiredAssertionStatus0
+        );
+        this.methodInfo2Register.put(
+                new MethodInfo("registerNatives", "()V"),
+                this::registerNatives
+        );
     }
 
-    public void registerNow() {
-        Registry.register(trigger4JClassName, MethodInfo2Register.METHOD_1, MethodInfo2Register.PARAMS_RETURN_1, new NativeMethod(this, MethodInfo2Register.METHOD_1));
-        Registry.register(trigger4JClassName, MethodInfo2Register.METHOD_2, MethodInfo2Register.PARAMS_RETURN_2, new NativeMethod(this, MethodInfo2Register.METHOD_2));
-        Registry.register(trigger4JClassName, MethodInfo2Register.METHOD_3, MethodInfo2Register.PARAMS_RETURN_3, new NativeMethod(this, MethodInfo2Register.METHOD_3));
-        Registry.register(trigger4JClassName, MethodInfo2Register.METHOD_4, MethodInfo2Register.PARAMS_RETURN_4, new NativeMethod(this, MethodInfo2Register.METHOD_4));
+    public static void registerNow() {
+        _Class holder = new _Class();
+        holder.register(holder, TRIGGER_4_CLASSNAME);
     }
 
     public void registerNatives(Frame frame) {
@@ -44,4 +51,27 @@ public class _Class {
         frame.getOperandStack().pushRef(frame.getMethod().clazz.loader.loadClass(name).getJavaClassObj());
     }
 
+    public void getName0(Frame frame) {
+        // java层面的java/lang/Class对像实例
+        Object jClassRef = frame.getLocalVarsTable().getRef(0);
+        // 获取底层绑定到的Klass
+        Klass bindKlass = (Klass) jClassRef.getExtra();
+        frame.getOperandStack().pushRef(StringPool.convertAndGetJavaInternStrObj(bindKlass.loader, bindKlass.name));
+    }
+
+    public void desiredAssertionStatus0(Frame frame) {
+        // pass 暂时不考虑断言机制，有些包装类在初始化时候会调用这个本地方法
+        frame.getOperandStack().pushBoolean(false);
+    }
+
+    public void isInterface(Frame frame) {
+        // 这个ref是Java层面java/lang/Class的对象实例
+        Object ref = frame.getLocalVarsTable().getRef(0);
+        frame.getOperandStack().pushBoolean(((Klass) ref.getExtra()).isInterface());
+    }
+
+    public void isPrimitive(Frame frame) {
+        Object ref = frame.getLocalVarsTable().getRef(0);
+        frame.getOperandStack().pushBoolean(((Klass) ref.getExtra()).isPrimitive());
+    }
 }

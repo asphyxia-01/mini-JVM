@@ -10,12 +10,10 @@ import tzy.tinyPros.JVM09.rtda.thread.Frame;
 public class LDC2_W extends Index16Instruction {
     @Override
     public void execute(Frame frame) {
-        Object val
-                =
-                frame
-                        .getMethod()
-                        .clazz.runTimeConstantPool
-                        .constants[this.getIdx()];
+        Object val = frame
+                .getMethod()
+                .clazz.runTimeConstantPool
+                .constants[this.getIdx()];
         if (val instanceof Long) {
             frame
                     .getOperandStack()

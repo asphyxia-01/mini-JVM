@@ -87,10 +87,15 @@ public class OperandStack {
     }
 
     private Slot cloneSlot(Slot slot) {
-        Slot newSlot = new Slot();
-        newSlot.setNum(slot.getNum());
-        newSlot.setRef(slot.getRef(false));
-        return newSlot;
+        return slot._clone();
+    }
+
+    public void pushBoolean(boolean val) {
+        if (val) {
+            this.pushInt(1);
+        } else {
+            this.pushInt(0);
+        }
     }
 
     public void pushSlot(Slot slot) {

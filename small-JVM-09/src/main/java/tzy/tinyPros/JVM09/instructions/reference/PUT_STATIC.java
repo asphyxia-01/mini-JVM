@@ -51,20 +51,20 @@ public class PUT_STATIC extends Index16Instruction {
             case "C":
             case "S":
             case "I":
-                fClass.getStaticVars().setInt(slotId, stack.popInt());
+                fClass.staticVars.setInt(slotId, stack.popInt());
                 break;
             case "J":
-                fClass.getStaticVars().setLong(slotId, stack.popLong());
+                fClass.staticVars.setLong(slotId, stack.popLong());
                 break;
             case "F":
-                fClass.getStaticVars().setFloat(slotId, stack.popFloat());
+                fClass.staticVars.setFloat(slotId, stack.popFloat());
                 break;
             case "D":
-                fClass.getStaticVars().setDouble(slotId, stack.popDouble());
+                fClass.staticVars.setDouble(slotId, stack.popDouble());
                 break;
             case "L":
             case "[":
-                fClass.getStaticVars().setRef(slotId, stack.popRef());
+                fClass.staticVars.setRef(slotId, stack.popRef());
                 break;
             default:
                 break;

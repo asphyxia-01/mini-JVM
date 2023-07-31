@@ -14,7 +14,7 @@ public class SIPUSH implements Instruction {
 
     @Override
     public void fetchOperands(ByteReader br) {
-        this.data = br.readShort();
+        this.data = br.read2Byte();
     }
 
     @Override

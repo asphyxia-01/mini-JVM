@@ -50,6 +50,6 @@ public class InterfaceMethodRef extends MemberRef {
                 return var0;
             }
         }
-        return MethodLookup.loopupMethodInInterfaces(clazz.interfaces, name, descriptor);
+        return MethodLookup.lookupMethodInInterfaces(clazz.interfaces, name, descriptor);
     }
 }

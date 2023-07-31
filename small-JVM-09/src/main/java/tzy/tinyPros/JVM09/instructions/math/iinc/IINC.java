@@ -27,8 +27,8 @@ public class IINC implements Instruction {
 
     @Override
     public void fetchOperands(ByteReader br) {
-        this.index = br.readByte();
-        this.constVal = br.readByte();
+        this.index = br.read1Byte();
+        this.constVal = br.read1Byte();
     }
 
     @Override

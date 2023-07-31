@@ -69,6 +69,7 @@ import tzy.tinyPros.JVM09.instructions.math.sub.ISUB;
 import tzy.tinyPros.JVM09.instructions.math.sub.LSUB;
 import tzy.tinyPros.JVM09.instructions.math.xor.IXOR;
 import tzy.tinyPros.JVM09.instructions.math.xor.LXOR;
+import tzy.tinyPros.JVM09.instructions.reserved.INVOKE_NATIVE;
 import tzy.tinyPros.JVM09.instructions.stack.dup.*;
 import tzy.tinyPros.JVM09.instructions.stack.pop.POP;
 import tzy.tinyPros.JVM09.instructions.stack.pop.POP2;
@@ -499,7 +500,8 @@ public class InstructionMapper {
             // case 0xc9:
             // 	return &JSR_W{}
             // case 0xca: breakpoint
-            // case 0xfe: impdep1
+            case (byte) 0xfe:
+                return new INVOKE_NATIVE();
             // case 0xff: impdep2
             default:
                 return null;

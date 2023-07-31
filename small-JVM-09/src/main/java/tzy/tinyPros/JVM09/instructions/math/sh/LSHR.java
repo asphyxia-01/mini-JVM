@@ -14,7 +14,7 @@ public class LSHR extends NoOperandsInstruction {
     @Override
     public void execute(Frame frame) {
         OperandStack stack = frame.getOperandStack();
-        long mov = stack.popLong();
+        long mov = stack.popInt();
         long num = stack.popLong();
         // 因为long类型只有64位，所以只需要取前6位即可表示要移动的数目
         stack.pushLong(num >> (mov & 0x3f));

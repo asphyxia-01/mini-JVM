@@ -29,61 +29,61 @@ public class WIDE implements Instruction {
 
     @Override
     public void fetchOperands(ByteReader br) {
-        byte opcode = br.readByte();
+        byte opcode = br.read1Byte();
         switch (opcode) {
             case 0x15:
                 ILOAD inst_iload = new ILOAD();
-                inst_iload.setIdx(br.readShort());
+                inst_iload.setIdx(br.read2Byte());
                 this.modifiedInstruction = inst_iload;
                 break;
             case 0x16:
                 LLOAD inst_lload = new LLOAD();
-                inst_lload.setIdx(br.readShort());
+                inst_lload.setIdx(br.read2Byte());
                 this.modifiedInstruction = inst_lload;
                 break;
             case 0x17:
                 FLOAD inst_fload = new FLOAD();
-                inst_fload.setIdx(br.readShort());
+                inst_fload.setIdx(br.read2Byte());
                 this.modifiedInstruction = inst_fload;
                 break;
             case 0x18:
                 DLOAD inst_dload = new DLOAD();
-                inst_dload.setIdx(br.readShort());
+                inst_dload.setIdx(br.read2Byte());
                 this.modifiedInstruction = inst_dload;
                 break;
             case 0x19:
                 ALOAD inst_aload = new ALOAD();
-                inst_aload.setIdx(br.readShort());
+                inst_aload.setIdx(br.read2Byte());
                 this.modifiedInstruction = inst_aload;
                 break;
             case 0x36:
                 ISTORE inst_istore = new ISTORE();
-                inst_istore.setIdx(br.readShort());
+                inst_istore.setIdx(br.read2Byte());
                 this.modifiedInstruction = inst_istore;
                 break;
             case 0x37:
                 LSTORE inst_lstore = new LSTORE();
-                inst_lstore.setIdx(br.readShort());
+                inst_lstore.setIdx(br.read2Byte());
                 this.modifiedInstruction = inst_lstore;
                 break;
             case 0x38:
                 FSTORE inst_fstore = new FSTORE();
-                inst_fstore.setIdx(br.readShort());
+                inst_fstore.setIdx(br.read2Byte());
                 this.modifiedInstruction = inst_fstore;
                 break;
             case 0x39:
                 DSTORE inst_dstore = new DSTORE();
-                inst_dstore.setIdx(br.readShort());
+                inst_dstore.setIdx(br.read2Byte());
                 this.modifiedInstruction = inst_dstore;
                 break;
             case 0x3a:
                 ASTORE inst_astore = new ASTORE();
-                inst_astore.setIdx(br.readShort());
+                inst_astore.setIdx(br.read2Byte());
                 this.modifiedInstruction = inst_astore;
                 break;
             case (byte) 0x84:
                 IINC inst_iinc = new IINC();
-                inst_iinc.setIndex(br.readShort());
+                inst_iinc.setIndex(br.read2Byte());
                 this.modifiedInstruction = inst_iinc;
                 break;
             case (byte) 0xa9:

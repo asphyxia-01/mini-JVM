@@ -1,6 +1,7 @@
 package tzy.tinyPros.JVM09.rtda.heap.constantpool;
 
 import tzy.tinyPros.JVM09.classfile.constantpool.impl.ConstantMemberRefInfo;
+import tzy.tinyPros.JVM09.rtda.heap.methodarea.FieldLookUp;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.Klass;
 import tzy.tinyPros.JVM09.rtda.heap.methodarea.Field;
 
@@ -56,25 +57,12 @@ public class FieldRef extends MemberRef {
      * @param descriptor 字段描述符
      */
     private Field lookupField(Klass holder, String name, String descriptor) {
-        // 终止条件
-        if (holder == null) {
-            return null;
+        // 先从自身和超类找起，此时holder不管是接口还是类都没关系（接口也是类的一种）
+        Field ans = FieldLookUp.lookupFieldInClass(holder, name, descriptor);
+        if (ans == null) {
+            ans = FieldLookUp.lookupFieldInInterfaces(holder.interfaces, name, descriptor);
         }
-        // 先找当前Class的Fields
-        for (Field var0 : holder.fields) {
-            if (var0.name.equals(name) && var0.descriptor.equals(descriptor)) {
-                return var0;
-            }
-        }
-        // 再找接口是否持有，接口中的默认都是static final修饰的字段
-        for (Klass var1 : holder.interfaces) {
-            Field ans = this.lookupField(var1, name, descriptor);
-            if (ans != null) {
-                return ans;
-            }
-        }
-        // 再找父类是否持有这个字段
-        return lookupField(holder.superClass, name, descriptor);
+        return ans;
     }
 
 }

@@ -18,7 +18,7 @@ public class GOTO_W implements Instruction {
 
     @Override
     public void fetchOperands(ByteReader br) {
-        this.offset = br.readInt();
+        this.offset = br.read4Byte();
     }
 
     @Override

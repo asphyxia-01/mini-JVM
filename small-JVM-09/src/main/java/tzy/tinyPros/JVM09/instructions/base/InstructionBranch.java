@@ -15,7 +15,7 @@ public class InstructionBranch implements Instruction {
     @Override
     public void fetchOperands(ByteReader br) {
         // 操作数占用两字节
-        this.offset = br.readShort();
+        this.offset = br.read2Byte();
     }
 
     @Override

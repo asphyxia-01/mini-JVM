@@ -50,4 +50,18 @@ public class StringPool {
         return new String(cs.chars());
     }
 
+    /**
+     * 如果字符串池中有则返回字符串池中的obj，而不是传入的要入池的strObj
+     */
+    public static Object internStr(Object strObj) {
+        String key = convertAndGetOriginalUtf8(strObj);
+        if (!internStrPool.containsKey(key)) {
+            internStrPool.put(
+                    key,
+                    strObj
+            );
+        }
+        return internStrPool.get(key);
+    }
+
 }

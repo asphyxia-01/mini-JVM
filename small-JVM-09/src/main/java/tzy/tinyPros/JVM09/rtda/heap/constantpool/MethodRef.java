@@ -45,10 +45,10 @@ public class MethodRef extends MemberRef {
     }
 
     private Method lookupMethod(Klass clazz, String name, String descriptor) {
-        Method ans = MethodLookup.loopupMethodInClass(clazz, name, descriptor);
+        Method ans = MethodLookup.lookupMethodInClass(clazz, name, descriptor);
         if (ans == null) {
             // 在这种情况下访问起始入口不能是接口，但是方法最终归属可以是接口，所以需要查找一下
-            ans = MethodLookup.loopupMethodInInterfaces(clazz.interfaces, name, descriptor);
+            ans = MethodLookup.lookupMethodInInterfaces(clazz.interfaces, name, descriptor);
         }
         return ans;
     }

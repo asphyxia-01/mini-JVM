@@ -28,6 +28,7 @@ public class Interpreter {
     private static int line;
 
     public static void interpret(Method method, boolean needLog, String[] args) {
+        // 传入main()方法
         new Interpreter(method, needLog, args);
     }
 
@@ -63,7 +64,7 @@ public class Interpreter {
             thread.setPc(nextPC);
             // 取指，每次reset是因为有些指令会改变pc的前进方向，而这个改变最先作用于栈帧的pc寄存器，对于ByteReader则是不改变，需要reset一下，同时栈帧也有可能改变，比如调用其他方法时候会push一个新的栈帧
             br.reset(frame.getMethod().code, nextPC);
-            byte opcode = br.readByte();
+            byte opcode = br.read1Byte();
             Instruction instruction = InstructionMapper.acquireInstruction(opcode);
             if (Objects.isNull(instruction)) {
                 System.out.printf("尚未实现该指令：%s\n", byteToHexString(new byte[]{opcode}));

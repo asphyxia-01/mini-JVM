@@ -25,7 +25,7 @@ public class PUT_FIELD extends Index16Instruction {
         Field field = fr.resolvedField();
         if (field.isFinal()) {
             // 如果是final字段，只有直属的类并且是构造器方法才能对其做第一次赋值(即初始化)
-            if (curClass != field.clazz || frame.getMethod().name.equals("<init>")) {
+            if (curClass != field.clazz || !frame.getMethod().name.equals("<init>")) {
                 throw new IllegalAccessError();
             }
         }

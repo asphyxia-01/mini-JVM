@@ -61,4 +61,12 @@ public class Slots {
     public Object getRef(int idx) {
         return this.slots[idx].getRef(false);
     }
+
+    public Slots _clone() {
+        Slots newSlots = new Slots(this.slots.length);
+        for (int i = 0; i < newSlots.slots.length; i++) {
+            newSlots.slots[i] = this.slots[i]._clone();
+        }
+        return newSlots;
+    }
 }

@@ -57,7 +57,7 @@ public class INVOKE_SPECIAL extends Index16Instruction {
         if (visitor.isSuper() &&
                 visitor.isExtendFrom(holder) &&
                 !method.name.equals("<init>")) {
-            invokedMethod = MethodLookup.loopupMethodInClass(visitor.superClass, mr.name, mr.descriptor);
+            invokedMethod = MethodLookup.lookupMethodInClass(visitor.superClass, mr.name, mr.descriptor);
         }
 
         if (invokedMethod == null && invokedMethod.isAbstract()) {
@@ -66,4 +66,5 @@ public class INVOKE_SPECIAL extends Index16Instruction {
 
         MethodLogicInvoke.invokeMethod(frame, invokedMethod);
     }
+
 }

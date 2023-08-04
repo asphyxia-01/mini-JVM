@@ -36,6 +36,8 @@ import tzy.tinyPros.JVM09.rtda.heap.methodarea.Method;
  * 线程共享：堆（存放对象实例）、方法区（类字段和方法、方法字节码、运行时常量池）
  **/
 public class Thread {
+
+    public final String name;
     /**
      * Program Counter 寄存器
      */
@@ -45,12 +47,13 @@ public class Thread {
      */
     private JVMStack stack;
 
-    public Thread(int maxStackDepth) {
+    public Thread(String name, int maxStackDepth) {
+        this.name = name;
         this.stack = new JVMStack(maxStackDepth);
     }
 
-    public Thread() {
-        this(1024);
+    public Thread(String name) {
+        this(name, 1024);
     }
 
     public void setPc(int pc) {
@@ -77,8 +80,16 @@ public class Thread {
         return new Frame(this, method);
     }
 
-    public boolean isStackEmpty(){
+    public boolean isStackEmpty() {
         return this.stack.isEmpty();
+    }
+
+    public Frame[] getFrames() {
+        return this.stack.getFrames();
+    }
+
+    public void clearJVMStack() {
+        this.stack.clear();
     }
 
 }

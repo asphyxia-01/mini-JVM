@@ -31,7 +31,7 @@ public class VM extends Need2Register {
 
     public static void registerNow() {
         VM holder = new VM();
-        holder.register(holder, TRIGGER_4_CLASSNAME);
+        holder.registerNow(holder, TRIGGER_4_CLASSNAME);
     }
 
     public void registerNatives(Frame frame) {

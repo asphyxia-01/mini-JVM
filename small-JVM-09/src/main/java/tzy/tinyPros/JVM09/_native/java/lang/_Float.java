@@ -28,7 +28,7 @@ public class _Float extends Need2Register {
 
     public static void registerNow() {
         _Float holder = new _Float();
-        holder.register(holder, TRIGGER_4_CLASSNAME);
+        holder.registerNow(holder, TRIGGER_4_CLASSNAME);
     }
 
     public void registerNatives(Frame frame) {

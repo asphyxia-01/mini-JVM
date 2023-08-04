@@ -26,7 +26,7 @@ public class _String extends Need2Register {
 
     public static void registerNow() {
         _String holder = new _String();
-        holder.register(holder, TRIGGER_4_CLASSNAME);
+        holder.registerNow(holder, TRIGGER_4_CLASSNAME);
     }
 
     public void registerNatives(Frame frame) {

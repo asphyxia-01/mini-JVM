@@ -27,7 +27,7 @@ public class LineNumberTableAttribute extends BaseAttributeInfoElements implemen
         }
     }
 
-    public int getLineNumeber(int pc) {
+    public int getLineNumber(int pc) {
         // 一行代码可能对应多个汇编指令，即多个PC对应同一行
         for (int i = this.entries.length - 1; i >= 0; i--) {
             if (pc >= this.entries[i].startPC) {
@@ -37,14 +37,18 @@ public class LineNumberTableAttribute extends BaseAttributeInfoElements implemen
         return -1;
     }
 
+    public LineNumberEntry[] getEntries() {
+        return this.entries;
+    }
+
     /**
      * LineNumberEntry记录的行号和PC的对应关系如下
      * <p>
      * lineNumber不重复出现，由于可能多个PC对应同一行，所以仅记录某一行多个PC中开始的那个PC，由于PC递增的，那么这一行实际对应的PC是startPC及后的PC，而这些的PC的对应关系不再另外创建LineNumberEntry存储
      */
-    static class LineNumberEntry {
-        int startPC;
-        int lineNumber;
+    public class LineNumberEntry {
+        public final int startPC;
+        public final int lineNumber;
 
         LineNumberEntry(int var0, int var1) {
             this.startPC = var0;

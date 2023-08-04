@@ -98,6 +98,11 @@ public class OperandStack {
         }
     }
 
+    public OperandStack clear() {
+        this.top = -1;
+        return this;
+    }
+
     public void pushSlot(Slot slot) {
         this.slots[++this.top] = this.cloneSlot(slot);
     }

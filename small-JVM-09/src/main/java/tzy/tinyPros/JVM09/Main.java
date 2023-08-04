@@ -47,7 +47,7 @@ public class Main {
         Interpreter.interpret(
                 mainMethod,
                 cmd.getverboseInstFlag().get(),
-                args == null ? null : args.toArray(new String[0])
+                args == null ? new String[0] : args.toArray(new String[0])
         );
     }
 

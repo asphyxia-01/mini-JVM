@@ -50,4 +50,18 @@ public class JVMStack {
     public boolean isEmpty() {
         return this.curDepth == 0;
     }
+
+    public Frame[] getFrames() {
+        Frame[] frames = new Frame[this.curDepth];
+        int idx = 0;
+        for (Frame cur = this.top; cur != null; cur = cur.next) {
+            frames[idx++] = cur;
+        }
+        return frames;
+    }
+
+    public void clear() {
+        this.top = null;
+        this.curDepth = 0;
+    }
 }

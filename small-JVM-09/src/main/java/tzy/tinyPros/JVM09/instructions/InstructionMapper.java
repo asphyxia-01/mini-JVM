@@ -477,8 +477,8 @@ public class InstructionMapper {
                 return new ANEW_ARRAY();
             case (byte) 0xbe:
                 return new ARRAY_LENGTH();
-            // case 0xbf:
-            // 	return athrow
+            case (byte) 0xbf:
+                return new ATHROW();
             case (byte) 0xc0:
                 return new CHECK_CAST();
             case (byte) 0xc1:

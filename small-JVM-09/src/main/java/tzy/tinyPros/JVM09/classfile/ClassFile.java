@@ -1,6 +1,7 @@
 package tzy.tinyPros.JVM09.classfile;
 
 import tzy.tinyPros.JVM09.classfile.attributes.AttributeInfo;
+import tzy.tinyPros.JVM09.classfile.attributes.impl.SourceFileAttribute;
 import tzy.tinyPros.JVM09.classfile.constantpool.ConstantPool;
 
 /**
@@ -142,5 +143,14 @@ public class ClassFile {
 
     public MemberInfo[] getMethods() {
         return this.methods;
+    }
+
+    public SourceFileAttribute getSourceFileAttribute() {
+        for (AttributeInfo attribute : this.attributes) {
+            if (attribute instanceof SourceFileAttribute) {
+                return (SourceFileAttribute) attribute;
+            }
+        }
+        return null;
     }
 }

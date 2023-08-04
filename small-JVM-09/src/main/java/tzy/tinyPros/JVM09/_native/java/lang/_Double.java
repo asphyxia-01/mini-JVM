@@ -28,7 +28,7 @@ public class _Double extends Need2Register {
 
     public static void registerNow() {
         _Double holder = new _Double();
-        holder.register(holder, TRIGGER_4_CLASSNAME);
+        holder.registerNow(holder, TRIGGER_4_CLASSNAME);
     }
 
     public void registerNatives(Frame frame) {

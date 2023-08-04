@@ -32,7 +32,7 @@ public class CodeAttribute extends BaseAttributeInfoElements implements Attribut
     private ExceptionEntry[] exceptionTable;
     /**
      * 会先读取attribute_length
-     *
+     * <p>
      * 在 Attribute_Code中的attributes有LineNumberTable、LocalVariableTable、LocalVariableTypeTable、StackMapTable 等(不同JVM可以自己定义其他attribute)
      */
     private AttributeInfo[] attributeInfos;
@@ -50,7 +50,7 @@ public class CodeAttribute extends BaseAttributeInfoElements implements Attribut
         int codeLength = cr.readUInt32ToInt();
         this.code = cr.readBytes(codeLength);
         this.exceptionTable = ExceptionEntry.readExceptionEntries(cr);
-        this.attributeInfos = AttributeInfo.readAttributes(cr,this.cp);
+        this.attributeInfos = AttributeInfo.readAttributes(cr, this.cp);
     }
 
     public int getMaxStack() {
@@ -73,24 +73,33 @@ public class CodeAttribute extends BaseAttributeInfoElements implements Attribut
         return attributeInfos;
     }
 
-    static class ExceptionEntry{
-        private int startPC;
-        private int endPC;
-        private int handlePC;
-        private int catchType;
+    public LineNumberTableAttribute getLineNumberAttribute() {
+        for (AttributeInfo attributeInfo : this.attributeInfos) {
+            if (attributeInfo instanceof LineNumberTableAttribute) {
+                return ((LineNumberTableAttribute) attributeInfo);
+            }
+        }
+        return null;
+    }
 
-        ExceptionEntry(int startPC,int endPC,int handlePC,int catchType){
+    public static class ExceptionEntry {
+        public final int startPC;
+        public final int endPC;
+        public final int handlePC;
+        public final int catchType;
+
+        ExceptionEntry(int startPC, int endPC, int handlePC, int catchType) {
             this.startPC = startPC;
             this.endPC = endPC;
             this.handlePC = handlePC;
             this.catchType = catchType;
         }
 
-        static ExceptionEntry[] readExceptionEntries(ClassReader cr){
+        static ExceptionEntry[] readExceptionEntries(ClassReader cr) {
             int tableLength = cr.readU2();
             ExceptionEntry[] table = new ExceptionEntry[tableLength];
-            for (int i = 0; i <tableLength; i++) {
-                table[i] = new ExceptionEntry(cr.readU2(),cr.readU2(),cr.readU2(),cr.readU2());
+            for (int i = 0; i < tableLength; i++) {
+                table[i] = new ExceptionEntry(cr.readU2(), cr.readU2(), cr.readU2(), cr.readU2());
             }
             return table;
         }

@@ -1,7 +1,10 @@
 package tzy.tinyPros.JVM09._native;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @author TPureZY
@@ -15,9 +18,22 @@ public abstract class Need2Register {
      */
     protected final Map<MethodInfo, MethodNode> methodInfo2Register = new HashMap<>();
 
-    protected final void register(Need2Register obj, String trigger4ClassName) {
+    /**
+     * 设置是否需要在注册后清空methodInfo2Register中的信息，以节省空间
+     */
+    protected boolean del;
+
+    protected final void registerNow(Need2Register obj, String trigger4ClassName) {
         for (Map.Entry<MethodInfo, MethodNode> entry : methodInfo2Register.entrySet()) {
-            Registry.register(trigger4ClassName, entry.getKey().name, entry.getKey().desc, new NativeMethod(obj, entry.getValue()));
+            Registry.register(
+                    trigger4ClassName,
+                    entry.getKey().name,
+                    entry.getKey().desc,
+                    new NativeMethod(obj, entry.getValue())
+            );
+        }
+        if (del) {
+            methodInfo2Register.clear();
         }
     }
 

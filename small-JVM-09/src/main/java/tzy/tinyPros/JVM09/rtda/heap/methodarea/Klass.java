@@ -1,10 +1,10 @@
 package tzy.tinyPros.JVM09.rtda.heap.methodarea;
 
 import tzy.tinyPros.JVM09.classfile.ClassFile;
+import tzy.tinyPros.JVM09.classfile.attributes.impl.SourceFileAttribute;
 import tzy.tinyPros.JVM09.rtda.heap.constantpool.AccessFlags;
 import tzy.tinyPros.JVM09.rtda.heap.constantpool.RunTimeConstantPool;
 import tzy.tinyPros.JVM09.rtda.heap.ClassLoader;
-import tzy.tinyPros.JVM09.rtda.thread.Slot;
 
 import java.util.Arrays;
 
@@ -47,6 +47,11 @@ public class Klass {
      * 类变量会在类加载时候进行初始化，和类是直接绑定关系，不需要 new 实例化
      */
     public Slots staticVars;
+
+    /**
+     * 并不是所有的类都有源文件信息，这个因编译时的编译器选项而定，同时一些特殊的如在JVM运行时生成的类也没有源文件信息
+     */
+    public String sourceFile;
 
     /**
      * 是否初始化过，这里主要指进行静态初始化和静态代码块的执行
@@ -96,6 +101,15 @@ public class Klass {
         this.runTimeConstantPool = new RunTimeConstantPool(this, file.getConstantPool());
         this.fields = Field.newFields(this, file.getFields());
         this.methods = Method.newMethods(this, file.getMethods());
+        this.sourceFile = this.getSourceFile(file);
+    }
+
+    private String getSourceFile(ClassFile file) {
+        SourceFileAttribute attr = file.getSourceFileAttribute();
+        if (attr != null) {
+            return attr.getSourceFileName();
+        }
+        return "UnKnown";
     }
 
     public void setJavaClassObj(Object obj) {
@@ -250,9 +264,11 @@ public class Klass {
     }
 
     public boolean isSubImplementFrom(Klass other) {
-        for (Klass item : this.interfaces) {
-            if (item == other || item.isSubImplementFrom(other)) {
-                return true;
+        if (this.interfaces != null) {
+            for (Klass item : this.interfaces) {
+                if (item == other || item.isSubImplementFrom(other)) {
+                    return true;
+                }
             }
         }
         return false;

@@ -28,6 +28,9 @@ public class Method extends ClassMember {
      */
     public final int argSlotCnt;
 
+    public final ExceptionTable exceptionTable;
+    public final LineNumberTable lineNumberTable;
+
     public Method(MemberInfo info, Klass clazz) {
         super(info, clazz);
         MethodDescriptor mDesc = MethodDescriptorParse.parseMethodDescriptorParser(info.getDescriptor());
@@ -37,15 +40,22 @@ public class Method extends ClassMember {
             this.maxStackDepth = codeAttributeInfo.getMaxStack();
             this.maxLocalVarsLength = codeAttributeInfo.getMaxLocals();
             this.code = codeAttributeInfo.getCode();
+            this.exceptionTable = new ExceptionTable(codeAttributeInfo.getExceptionTable(), clazz.runTimeConstantPool);
+            this.lineNumberTable = new LineNumberTable(codeAttributeInfo.getLineNumberAttribute());
         } else if (this.isNative()) {
             // need to be modified
             this.maxStackDepth = 4;
             this.maxLocalVarsLength = this.argSlotCnt;
             this.code = this.injectCodeInfo(mDesc.getReturnType());
+            this.exceptionTable = null;
+            this.lineNumberTable = null;
         } else {
+            // is abstract
             this.maxStackDepth = 0;
             this.maxLocalVarsLength = 0;
             this.code = null;
+            this.exceptionTable = null;
+            this.lineNumberTable = null;
         }
     }
 
@@ -98,6 +108,31 @@ public class Method extends ClassMember {
 
     public boolean isStrict() {
         return 0 != (this.accessFlags & AccessFlags.ACC_STRICT);
+    }
+
+    /**
+     * 获取异常表，查找是否存在能处理 happenedPC 处抛出的异常的方法，获取处理逻辑的开始 PC ，也就是catch中逻辑的开始PC
+     *
+     * @param exClass    抛出的异常的类型
+     * @param happenedPC 触发athrow指令的位置PC
+     * @return 处理逻辑开始PC
+     */
+    public int analyseExceptionAndGetHandlerPC(Klass exClass, int happenedPC) {
+        ExceptionTable.ExceptionHandler exceptionHandler = this.exceptionTable.analyseExceptionAndGetHandler(exClass, happenedPC);
+        return exceptionHandler == null ? -1 : exceptionHandler.handlerPC;
+    }
+
+    /**
+     * PC处指令在源代码中对应的行号
+     */
+    public int getLineNumber(int pc) {
+        if (this.isNative()) {
+            return -2;
+        }
+        if (this.lineNumberTable == null) {
+            return -1;
+        }
+        return this.lineNumberTable.findLineNumberByPC(pc);
     }
 
 }

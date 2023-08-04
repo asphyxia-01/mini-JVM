@@ -34,7 +34,7 @@ public class Interpreter {
 
     private Interpreter(Method method, boolean needLog, String[] args) {
         // 模拟JVM创建主线程运行 main(String[] args) 方法
-        Thread mainThread = new Thread();
+        Thread mainThread = new Thread("main");
         Frame frame = mainThread.newFrame(method);
         mainThread.pushFrame(frame);
         if (args != null) {

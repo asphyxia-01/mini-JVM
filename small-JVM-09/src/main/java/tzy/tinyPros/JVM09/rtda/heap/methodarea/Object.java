@@ -24,9 +24,10 @@ public class Object {
 
     /**
      * 如果当前对象是java/lang/Class对象（即 clazz.name == "java/lang/Class"），则extra存放的是与其绑定的Klass结构，表示当前Object对象是Java层面中哪个类的伴生Class对象，此时也可以写成<pre>{@code private Klass bindKlass}</pre>
-     * <p>
-     * <p>
      * 每个类除了实例化的对象，都有一个伴生的Class对象（在Java层面就是java/lang/Class的实例对象，但绑定不同的底层Klass结构，相当于映射，以实现一个特殊功能如反射）
+     * <p>
+     * <p>
+     * 如果当前对象是Throwable的子类的实例对象，则这里存放该...Exception/...Error对象的StackTraces信息，也就是异常信息(虚拟机栈信息)，因此真实写法是<pre>{@code private _Throwable[] stackTraceInfos}</pre>其中_Throwable对象中最有用的信息是StackTraceElement实例，记录了异常发生时的栈信息
      */
     private java.lang.Object extra;
 

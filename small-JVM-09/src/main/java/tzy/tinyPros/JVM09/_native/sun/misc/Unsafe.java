@@ -20,7 +20,7 @@ public class Unsafe extends Need2Register {
 
     public static void registerNow() {
         Unsafe holder = new Unsafe();
-        holder.register(holder, TRIGGER_4_CLASSNAME);
+        holder.registerNow(holder, TRIGGER_4_CLASSNAME);
     }
 
     public void registerNatives(Frame frame) {

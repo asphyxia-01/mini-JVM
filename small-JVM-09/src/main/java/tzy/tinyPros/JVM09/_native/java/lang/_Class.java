@@ -38,7 +38,7 @@ public class _Class extends Need2Register {
 
     public static void registerNow() {
         _Class holder = new _Class();
-        holder.register(holder, TRIGGER_4_CLASSNAME);
+        holder.registerNow(holder, TRIGGER_4_CLASSNAME);
     }
 
     public void registerNatives(Frame frame) {

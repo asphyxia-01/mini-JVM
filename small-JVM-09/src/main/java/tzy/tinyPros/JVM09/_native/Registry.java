@@ -26,6 +26,7 @@ public class Registry {
         _System.registerNow();
         VM.registerNow();
         Unsafe.registerNow();
+        _Throwable.registerNow();
     }
 
     /**

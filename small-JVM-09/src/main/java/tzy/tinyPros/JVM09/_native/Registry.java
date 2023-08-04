@@ -1,6 +1,7 @@
 package tzy.tinyPros.JVM09._native;
 
 import tzy.tinyPros.JVM09._native.java.lang.*;
+import tzy.tinyPros.JVM09._native.sun.misc.Unsafe;
 import tzy.tinyPros.JVM09._native.sun.misc.VM;
 
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class Registry {
         _String.registerNow();
         _System.registerNow();
         VM.registerNow();
+        Unsafe.registerNow();
     }
 
     /**

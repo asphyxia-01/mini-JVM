@@ -1,5 +1,7 @@
 package tzy.tinyPros.JVM09.instructions.base;
 
+import tzy.tinyPros.JVM09.rtda.heap.methodarea.Object;
+
 /**
  * @author TPureZY
  * @since 2023/7/26 21:51

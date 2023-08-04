@@ -32,7 +32,7 @@ public class INVOKE_VIRTUAL extends Index16Instruction {
         // 得到隐式传入的 this 参数
         Object ref = frame.getOperandStack().getRefFromTop(method.argSlotCnt - 1);
         if (ref == null) {
-            // System.out.println( ~ ) 的out是本地方法赋的值，在操作数中表现为 null
+            // 对println()方法做中止操作，内部实现有synchronized锁机制，此JVM未实现锁操作，接管println()方法的执行逻辑，其对应的栈帧不如栈执行，JVM模拟执行然后返回
             if ("println".equals(mr.name)) {
                 _println(frame.getOperandStack(), mr.descriptor);
                 return;

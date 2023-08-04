@@ -1,4 +1,0 @@
-ldc系列指令从运行时常量池中加载常量值，并把它推入操作数栈，共有三条，ldc属于常量类指令
-ldc和ldc_w用于加载int、float和字符串常量，java.lang.Class实例或者MethodType和MethodHandle实例
-ldc处理的常量池索引是 1byte 长度，ldc_w处理的常量池索引是 2byte 长度
-ldc2_w用来加载long和double类型常量

@@ -1,5 +1,0 @@
-栈指令对操作数栈进行操作（共9条）
-pop：Pop the top operand stack value
-pop2：Pop the top one or two operand stack values
-dup：复制栈顶变量
-swap：交换栈顶的两个变量

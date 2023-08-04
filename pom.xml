@@ -5,19 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>tzy.tinyPros</groupId>
-    <artifactId>small-JVM</artifactId>
+    <artifactId>mini-JVM</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>small-JVM-01</module>
-        <module>small-JVM-02</module>
-        <module>small-JVM-03</module>
-        <module>small-JVM-04</module>
-        <module>small-JVM-05</module>
-        <module>small-JVM-06</module>
-        <module>small-JVM-07</module>
-        <module>small-JVM-08</module>
-        <module>small-JVM-09</module>
+        <module>mini-JVM-core</module>
+        <module>mini-JVM-finder</module>
+        <module>mini-JVM-parser</module>
     </modules>
 
     <properties>
@@ -35,6 +29,16 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>tzy.tinyPros</groupId>
+                <artifactId>mini-JVM-finder</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>tzy.tinyPros</groupId>
+                <artifactId>mini-JVM-parser</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
             <dependency>
                 <groupId>com.beust</groupId>
                 <artifactId>jcommander</artifactId>

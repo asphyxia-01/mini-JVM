@@ -1,5 +1,0 @@
-共有11条，但是ret、jsr在Java6之前用于实现finally子句，后不再使用这两条指令
-return系列指令有6条，用于从方法调用中返回
-
-另两条主要用在switch-case中，分别是tableswitch和lookupswitch
-剩下一条是goto指令，实现无条件跳转

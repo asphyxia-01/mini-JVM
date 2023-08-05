@@ -26,7 +26,7 @@ public class Index16Instruction implements Instruction {
         int curIdx = this.idx;
         // 作为索引不能为负
         if (curIdx < 0) {
-            curIdx = curIdx & 0x000000ff;
+            curIdx = curIdx & 0x0000ffff;
         }
         return curIdx;
     }
